@@ -41,46 +41,58 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+$border-color = black
+$border-width = 1px
+
 .grid-container
-  border 1px solid green
   height 100%
+  border-bottom $border-width solid $border-color
+  border-left $border-width solid $border-color
   display grid
-  grid-template-areas \
-    'key-partners key-partners key-activities key-activities value-propositions value-propositions customer-relationships customer-relationships customer-segments customer-segments'\
-    'key-partners key-partners key-activities key-activities value-propositions value-propositions customer-relationships customer-relationships customer-segments customer-segments'\
-    'key-partners key-partners key-resources key-resources value-propositions value-propositions channels channels customer-segments customer-segments'\
-    'cost-structure cost-structure cost-structure cost-structure cost-structure revenue-streams revenue-streams revenue-streams revenue-streams revenue-streams'
+  // 10 columns, min width: 250px
+  grid-template-columns repeat(10, minmax(100px, 1fr))
+  grid-auto-rows minmax(100px, auto)
 
 .key-partners
-  grid-area key-partners
+  grid-column 1 / 3
+  grid-row 1 / 4
 
 .key-activities
-  grid-area key-activities
+  grid-column 3 / 5
+  grid-row 1 / 3
 
 .value-propositions
-  grid-area value-propositions
+  grid-column 5 / 7
+  grid-row 1 / 4
 
 .customer-relationships
-  grid-area customer-relationships
+  grid-column 7 / 9
+  grid-row 1 / 3
 
 .customer-segments
-  grid-area customer-segments
+  grid-column 9 / 11
+  grid-row 1 / 4
 
 .key-resources
-  grid-area key-resources
+  grid-column 3 / 5
+  grid-row 3 / 4
 
 .channels
-  grid-area channels
+  grid-column 7 / 9
+  grid-row 3
 
 .cost-structure
-  grid-area cost-structure
+  grid-column 1 / 6
+  grid-row 4
 
 .revenue-streams
-  grid-area revenue-streams
+  grid-column 6 / 11
+  grid-row 4
 
 .grid-item
   text-align center
-  border 1px solid black
+  border-top $border-width solid $border-color
+  border-right $border-width solid $border-color
   &-header
     display flex
     align-items center
