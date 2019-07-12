@@ -49,9 +49,9 @@ $border-width = 1px
   border-bottom $border-width solid $border-color
   border-left $border-width solid $border-color
   display grid
-  // 10 columns, min width: 250px
+  // 10 columns, min width: 100px
   grid-template-columns repeat(10, minmax(100px, 1fr))
-  grid-auto-rows minmax(100px, auto)
+  grid-auto-rows minmax(min-content, auto)
 
 .key-partners
   grid-column 1 / 3

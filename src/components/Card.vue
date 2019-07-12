@@ -1,5 +1,5 @@
 <template>
-  <div class="card-container shadow-1">
+  <div class="card-container shadow-2">
     Hello from card
   </div>
 </template>
@@ -12,5 +12,5 @@ export default {
 
 <style lang="stylus" scoped>
   .card-container
-    background green
+    height 100px
 </style>
