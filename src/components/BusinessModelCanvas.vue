@@ -7,35 +7,53 @@
           <img src="@/assets/img/insert-button.png" width="20"/>
         </div>
       </div>
-      <div class="grid-item-body">
-        <card />
-      </div>
+      <draggable
+        tag="div"
+        class="dropzone"
+        :list="field.items"
+        :group="{ name: 'row' }"
+        v-bind="dragOptions"
+        @change="onGroupChange">
+        <card v-for="item in field.items" :key="item.id" :item="item"></card>
+      </draggable>
     </div>
   </div>
 </template>
 
 <script>
-
 import Card from './Card'
+import Draggable from 'vuedraggable'
 
 export default {
   name: 'BusinessModelCanvas',
   components: {
-    Card
+    Card,
+    Draggable
   },
   data () {
     return {
+      dragOptions: {
+        animation: 150,
+        disabled: false,
+        ghostClass: 'ghost'
+      },
       canvasFields: [
-        { key: 'key-partners', label: 'Key Partners' },
-        { key: 'key-activities', label: 'Key Activities' },
-        { key: 'value-propositions', label: 'Value Propositions' },
-        { key: 'customer-relationships', label: 'Customer Relationships' },
-        { key: 'customer-segments', label: 'Customer Segments' },
-        { key: 'key-resources', label: 'Key Resources' },
-        { key: 'channels', label: 'Channels' },
-        { key: 'cost-structure', label: 'Cost Structure' },
-        { key: 'revenue-streams', label: 'Revenue Streams' }
+        { key: 'key-partners', label: 'Key Partners', items: [ { id: 'kp-1', name: 'Key Partner 1' } ] },
+        { key: 'key-activities', label: 'Key Activities', items: [ { id: 'ka-1', name: 'Key Activity 1' } ] },
+        { key: 'value-propositions', label: 'Value Propositions', items: [] },
+        { key: 'customer-relationships', label: 'Customer Relationships', items: [] },
+        { key: 'customer-segments', label: 'Customer Segments', items: [] },
+        { key: 'key-resources', label: 'Key Resources', items: [] },
+        { key: 'channels', label: 'Channels', items: [] },
+        { key: 'cost-structure', label: 'Cost Structure', items: [] },
+        { key: 'revenue-streams', label: 'Revenue Streams', items: [] }
       ]
+    }
+  },
+  methods: {
+    onGroupChange (e) {
+      console.log(`%cGroup Change:`, 'background: green; color: white', e)
+      console.log('FIELDS', this.canvasFields)
     }
   }
 }
@@ -101,4 +119,14 @@ $border-width = 1px
     font-size 1.3rem
   &-body
     padding 0 1rem
+
+  .dropzone
+    min-height 100%
+
+  .flip-list-move
+    transition transform 0.5s
+
+  .ghost
+    opacity 0.5
+    background #c8ebfb
 </style>

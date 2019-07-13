@@ -1,12 +1,13 @@
 <template>
   <div class="card-container shadow-2">
-    Hello from card
+    {{item}}
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Card'
+  name: 'Card',
+  props: ['item']
 }
 </script>
 
