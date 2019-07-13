@@ -11,11 +11,10 @@
         tag="div"
         class="dropzone"
         :list="field.items"
-        :group="{ name: 'row' }"
         v-bind="dragOptions"
-        @start="drag=true"
-        @end="drag=false"
-        @change="onGroupChange">
+        @start="onDragStart"
+        @end="onDragEnd"
+        @change="onChange">
         <card v-for="item in field.items" :key="item.id" :item="item"></card>
       </draggable>
     </div>
@@ -35,9 +34,15 @@ export default {
   data () {
     return {
       dragOptions: {
-        animation: 50,
+        group: 'bmc',
+        sort: false,
+        delay: 0,
         disabled: false,
-        ghostClass: 'ghost'
+        animation: 50,
+        ghostClass: 'ghost', // Class name for the drop placeholder
+        chosenClass: 'chosen', // Class name for the chosen item
+        dragClass: 'drag', // Class name for the dragging item,
+        forceFallback: false
       },
       canvasFields: [
         { key: 'key-partners', label: 'Key Partners', items: [ { id: 'kp-1', name: 'Key Partner 1' } ] },
@@ -54,7 +59,19 @@ export default {
     }
   },
   methods: {
-    onGroupChange (e) {
+    onDragStart (evt) {
+      this.drag = true
+      const { clone } = evt
+      console.log('CLONE', evt)
+    },
+    onDragEnd (evt) {
+      this.drag = false
+    },
+    onMove (evt, originalEvt) {
+      console.log('ON MOVE', evt, originalEvt)
+    },
+    // Called when dragging element changes position
+    onChange (e) {
       console.log(`%cGroup Change:`, 'background: green; color: white', e)
       console.log('FIELDS', this.canvasFields)
     }
@@ -112,7 +129,7 @@ $grey-200 = #eeeeee
   grid-row 4
 
 .grid-item
-  text-align center
+  transition background-color 0.2s ease
   border-top $border-width solid $border-color
   border-right $border-width solid $border-color
   background $grey-200
@@ -123,8 +140,6 @@ $grey-200 = #eeeeee
     padding 1rem
     font-size 1.3rem
     font-weight bold
-  &-body
-    padding 0 1rem
 
   .dropzone
     min-height 100%
@@ -134,7 +149,18 @@ $grey-200 = #eeeeee
   .flip-list-move
     transition transform 0.5s
 
+  // class for the drop placeholder
   .ghost
-    opacity 0.5
-    background #c8ebfb
+    opacity 0
+  // class for the chosen item (applied when user click on draggable element)
+  .chosen
+    transform rotate(3deg)
+    -moz-transform rotate(3deg)
+    -webkit-transform rotate(3deg)
+  // class for the dragging item (applied when user starts dragging the element)
+  .drag
+    transform rotate(3deg)
+    -moz-transform rotate(3deg)
+    -webkit-transform rotate(3deg)
+
 </style>
