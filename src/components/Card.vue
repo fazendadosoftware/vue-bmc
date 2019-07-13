@@ -13,5 +13,6 @@ export default {
 
 <style lang="stylus" scoped>
   .card-container
-    height 100px
+    min-height 100px
+    background white
 </style>

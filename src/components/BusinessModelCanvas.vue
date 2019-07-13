@@ -13,6 +13,8 @@
         :list="field.items"
         :group="{ name: 'row' }"
         v-bind="dragOptions"
+        @start="drag=true"
+        @end="drag=false"
         @change="onGroupChange">
         <card v-for="item in field.items" :key="item.id" :item="item"></card>
       </draggable>
@@ -33,7 +35,7 @@ export default {
   data () {
     return {
       dragOptions: {
-        animation: 150,
+        animation: 50,
         disabled: false,
         ghostClass: 'ghost'
       },
@@ -47,7 +49,8 @@ export default {
         { key: 'channels', label: 'Channels', items: [] },
         { key: 'cost-structure', label: 'Cost Structure', items: [] },
         { key: 'revenue-streams', label: 'Revenue Streams', items: [] }
-      ]
+      ],
+      drag: false
     }
   },
   methods: {
@@ -61,6 +64,7 @@ export default {
 <style lang="stylus" scoped>
 $border-color = black
 $border-width = 1px
+$grey-200 = #eeeeee
 
 .grid-container
   height 100%
@@ -111,17 +115,21 @@ $border-width = 1px
   text-align center
   border-top $border-width solid $border-color
   border-right $border-width solid $border-color
+  background $grey-200
   &-header
     display flex
     align-items center
     justify-content space-between
     padding 1rem
     font-size 1.3rem
+    font-weight bold
   &-body
     padding 0 1rem
 
   .dropzone
     min-height 100%
+    & > .card-container
+      margin 1rem
 
   .flip-list-move
     transition transform 0.5s
