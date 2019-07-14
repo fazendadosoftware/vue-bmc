@@ -1,6 +1,7 @@
 <template>
   <div
     class="card-container shadow-2"
+    :class="editing ? 'card-editing' : ''"
     @mouseover="hover = true"
     @mouseleave="hover = false"
     :editing="editing"
@@ -8,38 +9,25 @@
       exclude: ['div.card-container'],
       handler: 'onClose'
     }">
-    <div class="card-header">
-      <div class="title">
-        <span v-if="!editing">{{title}}</span>
-        <input v-if="editing && typeof item === 'object'" v-model="title">
-      </div>
-      <div class="actions">
-        <transition name="fade">
-          <font-awesome-icon v-if="hover" icon="pen" @click="editing = !editing" />
-        </transition>
-      </div>
+    <div class="actions">
+      <transition name="fade">
+        <font-awesome-icon v-if="hover" icon="pen" @click="editing = !editing" />
+      </transition>
     </div>
-    <div class="card-body">
-      <vue-markdown v-if="!editing" :source="body"/>
-      <textarea v-else v-model="body" />
+    <div class="body">
+       <vue-markdown v-if="!editing" :source="editedContent"/>
+      <textarea v-if="editing" v-model="editedContent"/>
     </div>
   </div>
 </template>
 
 <script>
 
-export class CardItem {
-  constructor (title, body) {
-    this.title = title
-    this.body = body
-  }
-}
-
 export default {
   name: 'Card',
   props: {
-    item: {
-      type: [String, CardItem],
+    content: {
+      type: String,
       required: true
     }
   },
@@ -47,46 +35,27 @@ export default {
     return {
       editing: false,
       hover: false,
-      editedItem: {}
-    }
-  },
-  computed: {
-    title: {
-      get () {
-        return this.editedItem.title
-      },
-      set (title) {
-        this.editedItem = { ...this.editedItem, title }
-      }
-    },
-    body: {
-      get () {
-        return this.editedItem.body
-      },
-      set (val) {
-        this.editedItem.body = val
-        console.log('SETTING BODY', val)
-      }
+      editedContent: ''
     }
   },
   methods: {
-    updateEditedItemFromProp () {
-      this.editedItem = this.item instanceof CardItem ? { ...this.item } : new CardItem('', this.item)
+    updateEditedContentFromProp () {
+      this.editedContent = this.content
     },
     onClose () {
       if (this.editing) this.editing = false
     }
   },
   watch: {
-    item (val) {
-      this.updateEditedItemFromProp()
+    content (val) {
+      this.editedContent = val
     },
-    editedItem (val) {
-      console.log('edited item changed', val)
+    editedContent (val) {
+      console.log('edited content changed', val)
     }
   },
   created () {
-    this.updateEditedItemFromProp()
+    this.editedContent = this.content
   }
 }
 </script>
@@ -99,24 +68,22 @@ export default {
     flex-flow column
     padding 1rem
     background white
-  .card-header
-    display flex
-    justify-content space-between
-    align-items center
-    > .title
-      font-size 1rem
-      font-weight bold
-      margin-bottom 0.5rem
-    > .actions
-      min-height 28px
+    position relative
+    box-sizing border-box
+    & > .actions
+      position absolute
+      right 0
+      top 0
+      padding 0.5rem
       > svg
+        float right
         padding 0.3rem
         cursor pointer
         border-radius 3px
         &:hover
           background $grey-200
 
-  .card-body
+  .body
     align-self flex-start
     font-size 0.9rem
 

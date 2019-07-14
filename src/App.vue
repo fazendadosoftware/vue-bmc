@@ -17,7 +17,6 @@ export default {
 }
 </script>
 <style lang="stylus">
-$padding = 1rem
 
 #app
   font-family 'Avenir', Helvetica, Arial, sans-serif
@@ -25,6 +24,5 @@ $padding = 1rem
   -moz-osx-font-smoothing grayscale
   text-align center
   color #2c3e50
-  height 100vh
-  padding $padding
+  height calc(100vh - 1rem)
 </style>

@@ -7,7 +7,7 @@
       :field="field.key">
       <div class="grid-item-header">
         <div>{{field.label}}</div>
-       <font-awesome-icon icon="plus" style="cursor:pointer; padding:0.5rem"/>
+       <font-awesome-icon @click="addCard(field.key)" icon="plus" style="cursor:pointer; padding:0.5rem"/>
       </div>
       <draggable
         tag="div"
@@ -19,14 +19,14 @@
         @start="onDragStart"
         @end="onDragEnd"
         @change="onChange">
-        <card v-for="(item, idx) in field.items" :key="idx" :item="item"></card>
+        <card v-for="(item, idx) in field.items" :key="idx" :content="item"></card>
       </draggable>
     </div>
   </div>
 </template>
 
 <script>
-import Card, { CardItem } from './Card'
+import Card from './Card'
 import Draggable from 'vuedraggable'
 
 export default {
@@ -46,11 +46,12 @@ export default {
         ghostClass: 'ghost', // Class name for the drop placeholder
         chosenClass: 'chosen', // Class name for the chosen item
         dragClass: 'drag', // Class name for the dragging item,
-        forceFallback: false
+        forceFallback: false,
+        filter: '.card-editing'
       },
       canvasFields: [
-        { key: 'key-partners', label: 'Key Partners', items: [ new CardItem('kp-1', 'Key Partner 1', 1) ] },
-        { key: 'key-activities', label: 'Key Activities', items: [ new CardItem('ka-1', 'Key Activity 1', 2) ] },
+        { key: 'key-partners', label: 'Key Partners', items: [ 'key parnter 1', 'key parnter 2' ] },
+        { key: 'key-activities', label: 'Key Activities', items: [ 'key activity 1', 'key activity 2' ] },
         { key: 'value-propositions', label: 'Value Propositions', items: ['some string test', 'other string', 'and'] },
         { key: 'customer-relationships', label: 'Customer Relationships', items: [] },
         { key: 'customer-segments', label: 'Customer Segments', items: [] },
@@ -80,6 +81,15 @@ export default {
       const { to } = evt
       const targetField = to.className.split(' ').filter(cl => cl !== 'dropzone').shift()
       if (targetField !== this.targetDragField) this.targetDragField = targetField
+    },
+    addCard (field) {
+      const fieldIdx = this.canvasFields.map(field => field.key).indexOf(field)
+      if (fieldIdx < 0) {
+        console.warn(`Field ${field} unknown`)
+        return
+      }
+      this.canvasFields[fieldIdx].items.push('')
+      console.log(`${new Date().toISOString()} adding card ${field}`)
     }
   }
 }
@@ -135,17 +145,6 @@ $grey-300 = #E0E0E0
   grid-column 6 / 11
   grid-row 4
 
-.dropzone.revenue-streams, .dropzone.cost-structure
-  display flex
-  flex-flow row wrap
-  align-items flex-start
-  justify-content space-around
-  & > .card-container
-    margin-right 1rem
-    margin-bottom 1rem
-    width calc(50% - 2rem)
-    box-sizing border-box
-
 .grid-item
   display flex
   flex-flow column
@@ -165,10 +164,25 @@ $grey-300 = #E0E0E0
 
   .dropzone
     flex 1
-    padding-left 1rem
+    display flex
+    flex-flow column
+    align-items center
+    justify-content flex-start
     & > .card-container
+      max-width 250px
+      width calc(100% - 2rem)
+      min-height 80px
       margin-bottom 1rem
-      margin-right 1rem
+    &.cost-structure, &.revenue-streams
+      display flex
+      flex-flow row wrap
+      justify-content center
+      align-items flex-start
+      padding 1rem
+      & > .card-container
+        width calc(40% - 2rem)
+        margin-right 1rem
+
 
   // class for the drop placeholder
   .ghost
