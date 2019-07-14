@@ -18,7 +18,8 @@
         v-bind="dragOptions"
         @start="onDragStart"
         @end="onDragEnd"
-        @change="onChange">
+        @change="onChange"
+        :ref="field.key">
         <card
           v-for="(item, idx) in field.items"
           :key="idx"
@@ -94,14 +95,18 @@ export default {
         return
       }
       this.canvasFields[fieldIdx].items.push('')
+      this.$nextTick(() => {
+        const fieldKey = this.canvasFields[fieldIdx].key
+        const cards = this.$refs[fieldKey][0].$children
+        const recentlyAddedCard = cards[cards.length - 1]
+        setTimeout(() => { recentlyAddedCard.editing = true }, 50)
+      })
       console.log(`${new Date().toISOString()} adding card ${field}`)
     },
     onCardContentChanged (fieldIdx, itemIndex, content) {
       this.canvasFields[fieldIdx].items[itemIndex] = content
-      console.log('CARD CONETNT CHANGED!', fieldIdx, itemIndex, content)
     },
     onCardDelete (fieldIdx, itemIdx) {
-      console.log('DELETING ITEM', fieldIdx, itemIdx)
       this.canvasFields[fieldIdx].items.splice(itemIdx, 1)
     }
   }

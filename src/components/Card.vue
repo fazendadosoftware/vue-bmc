@@ -73,6 +73,15 @@ export default {
     },
     editedContent (val) {
       if (val !== this.content) this.$emit('changed', val)
+    },
+    editing (val, oldVal) {
+      // if the user finalized the edition without content, remove that card...
+      if (!val && oldVal && !this.editedContent) {
+        this.$emit('delete')
+        return
+      }
+      // if the user starts to edit the card, focus on the text area element
+      if (val && !oldVal) this.$nextTick(() => { this.$refs.textarea.focus() })
     }
   },
   created () {
@@ -85,6 +94,7 @@ export default {
   $grey-200 = #eeeeee
 
   .card-container
+    transition all .3s ease
     display flex
     flex-flow column
     padding 0.5rem
@@ -118,10 +128,15 @@ export default {
     border none
     font-family inherit
     font-size inherit
+    line-height 120%
     outline none !important
     resize none
-    background $grey-200
     box-sizing border-box
     border-radius 3px
-    padding 0.5rem
+
+  .fade-enter-active, .fade-leave-active
+    transition opacity .5s
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+    opacity 0
+
 </style>
