@@ -11,12 +11,17 @@
     }">
     <div class="actions">
       <transition name="fade">
-        <font-awesome-icon v-if="hover" icon="pen" @click="editing = !editing" />
+        <font-awesome-icon v-if="hover || editing" icon="pen" @click="editing = !editing" />
       </transition>
     </div>
     <div class="body">
       <vue-markdown v-if="!editing" :source="editedContent"/>
-      <textarea v-if="editing" v-model="editedContent"/>
+      <textarea
+        v-show="editing"
+        rows="1"
+        v-model="editedContent"
+        @keydown="autosize"
+        ref="textarea"/>
     </div>
   </div>
 </template>
@@ -44,6 +49,13 @@ export default {
     },
     onClose () {
       if (this.editing) this.editing = false
+    },
+    autosize (evt) {
+      const { target } = evt
+      setTimeout(() => {
+        target.style.cssText = 'height:100%;padding:0'
+        target.style.cssText = 'height:' + target.scrollHeight + 'px'
+      }, 0)
     }
   },
   watch: {
@@ -56,6 +68,16 @@ export default {
   },
   created () {
     this.editedContent = this.content
+  },
+  mounted () {
+    const { textarea } = this.$refs
+    console.log('TEXT AREA', textarea)
+    textarea.addEventListener('keydown', this.autosize)
+  },
+  beforeDestroy () {
+    console.log('before destroying')
+    const { textarea } = this.$refs
+    textarea.removeEventListener('keydown', this.autosize)
   }
 }
 </script>
@@ -84,11 +106,17 @@ export default {
           background $grey-200
 
   .body
-    align-self flex-start
+    text-align left
     font-size 0.8rem
+    width 100%
+    height 100%
 
-  .fade-enter-active, .fade-leave-active
-    transition opacity .2s
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-    opacity 0
+  textarea
+    width 100%
+    height 100%
+    border none
+    font-family inherit
+    font-size inherit
+    outline none !important
+    resize none
 </style>
