@@ -1,6 +1,10 @@
 <template>
   <div class="grid-container">
-    <div v-for="field in canvasFields" :key="field.key" :class="field.key" class="grid-item">
+    <div
+      v-for="field in canvasFields"
+      :key="field.key"
+      :class="`grid-item ${field.key} ${field.key === targetDragField ? 'target' : ''}`"
+      :field="field.key">
       <div class="grid-item-header">
         <div>{{field.label}}</div>
         <div style="cursor: pointer" >
@@ -10,7 +14,9 @@
       <draggable
         tag="div"
         class="dropzone"
+        :class="`${field.key} ${field.key === targetDragField ? 'target' : ''}`"
         :list="field.items"
+        :move="onDragMove"
         v-bind="dragOptions"
         @start="onDragStart"
         @end="onDragEnd"
@@ -55,25 +61,27 @@ export default {
         { key: 'cost-structure', label: 'Cost Structure', items: [] },
         { key: 'revenue-streams', label: 'Revenue Streams', items: [] }
       ],
-      drag: false
+      drag: false,
+      targetDragField: ''
     }
   },
   methods: {
     onDragStart (evt) {
       this.drag = true
-      const { clone } = evt
-      console.log('CLONE', evt)
     },
     onDragEnd (evt) {
       this.drag = false
-    },
-    onMove (evt, originalEvt) {
-      console.log('ON MOVE', evt, originalEvt)
+      this.targetDragField = ''
     },
     // Called when dragging element changes position
     onChange (e) {
       console.log(`%cGroup Change:`, 'background: green; color: white', e)
       console.log('FIELDS', this.canvasFields)
+    },
+    onDragMove (evt) {
+      const { to } = evt
+      const targetField = to.className.split(' ').filter(cl => cl !== 'dropzone').shift()
+      if (targetField !== this.targetDragField) this.targetDragField = targetField
     }
   }
 }
@@ -82,6 +90,7 @@ export default {
 $border-color = black
 $border-width = 1px
 $grey-200 = #eeeeee
+$grey-300 = #E0E0E0
 
 .grid-container
   height 100%
@@ -128,11 +137,22 @@ $grey-200 = #eeeeee
   grid-column 6 / 11
   grid-row 4
 
+.dropzone.revenue-streams, .dropzone.cost-structure
+  display flex
+  flex-flow row wrap
+  align-items flex-start
+  & > .card-container
+    width 45%
+
 .grid-item
+  display flex
+  flex-flow column
   transition background-color 0.2s ease
   border-top $border-width solid $border-color
   border-right $border-width solid $border-color
   background $grey-200
+  &.target
+    background $grey-300
   &-header
     display flex
     align-items center
@@ -142,12 +162,9 @@ $grey-200 = #eeeeee
     font-weight bold
 
   .dropzone
-    min-height 100%
+    flex 1
     & > .card-container
       margin 1rem
-
-  .flip-list-move
-    transition transform 0.5s
 
   // class for the drop placeholder
   .ghost
@@ -162,5 +179,6 @@ $grey-200 = #eeeeee
     transform rotate(3deg)
     -moz-transform rotate(3deg)
     -webkit-transform rotate(3deg)
+    opacity 1
 
 </style>
