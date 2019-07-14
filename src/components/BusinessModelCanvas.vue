@@ -169,7 +169,8 @@ $grey-300 = #E0E0E0
     align-items center
     justify-content flex-start
     & > .card-container
-      max-width 250px
+      min-width 150px
+      max-width 300px
       width calc(100% - 2rem)
       min-height 80px
       margin-bottom 1rem
@@ -180,7 +181,7 @@ $grey-300 = #E0E0E0
       align-items flex-start
       padding 1rem
       & > .card-container
-        width calc(40% - 2rem)
+        width 30%
         margin-right 1rem
 
 
