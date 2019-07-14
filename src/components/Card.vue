@@ -2,6 +2,7 @@
   <div
     class="card-container card-handle shadow-2"
     :class="editing ? 'card-editing' : ''"
+    :style="editing ? 'padding-top: 35px' : ''"
     @mouseover="hover = true"
     @mouseleave="hover = false"
     :not-editing="!editing"
@@ -11,10 +12,15 @@
     }">
     <div class="actions">
       <transition name="fade">
-        <font-awesome-icon v-if="hover || editing" icon="times" @click="editing = false; $emit('delete')"/>
+        <font-awesome-icon v-if="editing" icon="trash-alt" @click="editing = false; $emit('delete')"/>
       </transition>
       <transition name="fade">
-        <font-awesome-icon v-if="hover || editing" icon="pen" @click="editing = !editing" />
+        <font-awesome-layers v-if="hover || editing" @click="editing = !editing">
+          <font-awesome-icon icon="pen" />
+          <transition name="fade">
+            <font-awesome-icon v-if="editing" icon="slash" />
+          </transition>
+        </font-awesome-layers>
       </transition>
     </div>
     <div class="body">
@@ -56,8 +62,8 @@ export default {
     autosize (evt) {
       const { target } = evt
       setTimeout(() => {
-        target.style.cssText = 'height:100%;padding:0'
-        target.style.cssText = 'height:' + target.scrollHeight + 'px'
+        target.style.cssText = 'height:100%;padding:0.5rem'
+        target.style.cssText = `height: calc(${target.scrollHeight}px + 1rem)`
       }, 0)
     }
   },
@@ -90,11 +96,13 @@ export default {
       right 0
       top 0
       padding 0.5rem
-      > svg
-        float right
+      display flex
+      align-items center
+      > svg, .fa-layers
         padding 0.3rem
         cursor pointer
         border-radius 3px
+        margin-right 0.5rem
         &:hover
           background $grey-200
 
@@ -112,7 +120,8 @@ export default {
     font-size inherit
     outline none !important
     resize none
-    background green
-    color white
+    background $grey-200
     box-sizing border-box
+    border-radius 3px
+    padding 0.5rem
 </style>
