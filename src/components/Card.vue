@@ -3,6 +3,7 @@
     class="card-container shadow-2"
     @mouseover="hover = true"
     @mouseleave="hover = false"
+    :editing="editing"
     v-closable="{
       exclude: ['div.card-container'],
       handler: 'onClose'
@@ -19,8 +20,8 @@
       </div>
     </div>
     <div class="card-body">
-      <span v-if="!editing">{{body}}</span>
-      <input v-else v-model="body">
+      <vue-markdown v-if="!editing" :source="body"/>
+      <textarea v-else v-model="body" />
     </div>
   </div>
 </template>
@@ -64,6 +65,7 @@ export default {
       },
       set (val) {
         this.editedItem.body = val
+        console.log('SETTING BODY', val)
       }
     }
   },
@@ -115,10 +117,7 @@ export default {
           background $grey-200
 
   .card-body
-    display flex
-    flex 1
-    justify-content flex-start
-    align-items center
+    align-self flex-start
     font-size 0.9rem
 
   .fade-enter-active, .fade-leave-active
