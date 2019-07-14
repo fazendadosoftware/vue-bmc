@@ -32,8 +32,24 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import Card from './Card'
 import Draggable from 'vuedraggable'
+import VueCloseable from '../directives/vue-closeable'
+import 'vue-draggable/polyfills'
+import VueMarkdown from 'vue-markdown'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faPlus, faPen, faSlash, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome'
+
+[faPlus, faPen, faTrashAlt, faSlash].forEach(icon => library.add(icon))
+
+Vue.component('vue-markdown', VueMarkdown)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('font-awesome-layers', FontAwesomeLayers)
+Vue.component('vue-markdown', VueMarkdown)
+
+Vue.use(VueCloseable)
 
 export default {
   name: 'BusinessModelCanvas',
@@ -218,5 +234,14 @@ $grey-300 = #E0E0E0
     -moz-transform rotate(3deg)
     -webkit-transform rotate(3deg)
     opacity 1
+
+  .shadow-1
+  box-shadow 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+
+  .shadow-2
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+
+  .shadow-3
+    box-shadow 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)
 
 </style>

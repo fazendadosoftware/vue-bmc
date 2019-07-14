@@ -36,7 +36,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'Card',
   props: {
@@ -101,6 +100,8 @@ export default {
     background white
     position relative
     box-sizing border-box
+    & > :not(.card-editing)
+      cursor pointer
     & > .actions
       position absolute
       right 0

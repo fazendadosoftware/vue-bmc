@@ -1,14 +1,23 @@
 {
   "name": "vue-bmc",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.1",
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
+    "build-bundle": "vue-cli-service build --target lib --name vue-bmc ./src/components/index.js",
     "lint": "vue-cli-service lint",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
   },
+  "files": [
+    "dist/*",
+    "src/*",
+    "public/*",
+    "*.json",
+    "*.js"
+  ],
+  "main": "./dist/vue-bmc.common.js",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
