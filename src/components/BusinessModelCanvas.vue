@@ -1,7 +1,7 @@
 <template>
   <div class="grid-container">
     <div
-      v-for="field in canvasFields"
+      v-for="(field, fieldIdx) in canvasFields"
       :key="field.key"
       :class="`grid-item ${field.key} ${field.key === targetDragField ? 'target' : ''}`"
       :field="field.key">
@@ -19,7 +19,11 @@
         @start="onDragStart"
         @end="onDragEnd"
         @change="onChange">
-        <card v-for="(item, idx) in field.items" :key="idx" :content="item"></card>
+        <card
+          v-for="(item, idx) in field.items"
+          :key="idx"
+          :content="item"
+          @changed="onCardContentChanged(fieldIdx, idx, $event)"></card>
       </draggable>
     </div>
   </div>
@@ -90,6 +94,10 @@ export default {
       }
       this.canvasFields[fieldIdx].items.push('')
       console.log(`${new Date().toISOString()} adding card ${field}`)
+    },
+    onCardContentChanged (fieldIdx, itemIndex, content) {
+      this.canvasFields[fieldIdx].items[itemIndex] = content
+      console.log('CARD CONETNT CHANGED!', fieldIdx, itemIndex, content)
     }
   }
 }

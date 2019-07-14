@@ -63,21 +63,11 @@ export default {
       this.editedContent = val
     },
     editedContent (val) {
-      console.log('edited content changed', val)
+      if (val !== this.content) this.$emit('changed', val)
     }
   },
   created () {
     this.editedContent = this.content
-  },
-  mounted () {
-    const { textarea } = this.$refs
-    console.log('TEXT AREA', textarea)
-    textarea.addEventListener('keydown', this.autosize)
-  },
-  beforeDestroy () {
-    console.log('before destroying')
-    const { textarea } = this.$refs
-    textarea.removeEventListener('keydown', this.autosize)
   }
 }
 </script>
