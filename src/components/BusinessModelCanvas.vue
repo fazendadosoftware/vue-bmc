@@ -23,7 +23,8 @@
           v-for="(item, idx) in field.items"
           :key="idx"
           :content="item"
-          @changed="onCardContentChanged(fieldIdx, idx, $event)"></card>
+          @delete="onCardDelete(fieldIdx, idx)"
+          @changed="onCardContentChanged(fieldIdx, idx, $event)"/>
       </draggable>
     </div>
   </div>
@@ -54,9 +55,9 @@ export default {
         handle: '.card-container[not-editing]'
       },
       canvasFields: [
-        { key: 'key-partners', label: 'Key Partners', items: [ 'key parnter 1', 'key parnter 2' ] },
-        { key: 'key-activities', label: 'Key Activities', items: [ 'key activity 1', 'key activity 2' ] },
-        { key: 'value-propositions', label: 'Value Propositions', items: ['some string test', 'other string', 'and'] },
+        { key: 'key-partners', label: 'Key Partners', items: [] },
+        { key: 'key-activities', label: 'Key Activities', items: [] },
+        { key: 'value-propositions', label: 'Value Propositions', items: [] },
         { key: 'customer-relationships', label: 'Customer Relationships', items: [] },
         { key: 'customer-segments', label: 'Customer Segments', items: [] },
         { key: 'key-resources', label: 'Key Resources', items: [] },
@@ -98,6 +99,10 @@ export default {
     onCardContentChanged (fieldIdx, itemIndex, content) {
       this.canvasFields[fieldIdx].items[itemIndex] = content
       console.log('CARD CONETNT CHANGED!', fieldIdx, itemIndex, content)
+    },
+    onCardDelete (fieldIdx, itemIdx) {
+      console.log('DELETING ITEM', fieldIdx, itemIdx)
+      this.canvasFields[fieldIdx].items.splice(itemIdx, 1)
     }
   }
 }

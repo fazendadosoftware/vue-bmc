@@ -11,6 +11,9 @@
     }">
     <div class="actions">
       <transition name="fade">
+        <font-awesome-icon v-if="hover || editing" icon="times" @click="editing = false; $emit('delete')"/>
+      </transition>
+      <transition name="fade">
         <font-awesome-icon v-if="hover || editing" icon="pen" @click="editing = !editing" />
       </transition>
     </div>
@@ -78,7 +81,7 @@ export default {
   .card-container
     display flex
     flex-flow column
-    padding 1rem
+    padding 0.5rem
     background white
     position relative
     box-sizing border-box
@@ -109,4 +112,7 @@ export default {
     font-size inherit
     outline none !important
     resize none
+    background green
+    color white
+    box-sizing border-box
 </style>
