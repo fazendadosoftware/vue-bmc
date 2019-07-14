@@ -1,10 +1,10 @@
 <template>
   <div
-    class="card-container shadow-2"
+    class="card-container card-handle shadow-2"
     :class="editing ? 'card-editing' : ''"
     @mouseover="hover = true"
     @mouseleave="hover = false"
-    :editing="editing"
+    :not-editing="!editing"
     v-closable="{
       exclude: ['div.card-container'],
       handler: 'onClose'
@@ -15,7 +15,7 @@
       </transition>
     </div>
     <div class="body">
-       <vue-markdown v-if="!editing" :source="editedContent"/>
+      <vue-markdown v-if="!editing" :source="editedContent"/>
       <textarea v-if="editing" v-model="editedContent"/>
     </div>
   </div>
@@ -85,7 +85,7 @@ export default {
 
   .body
     align-self flex-start
-    font-size 0.9rem
+    font-size 0.8rem
 
   .fade-enter-active, .fade-leave-active
     transition opacity .2s

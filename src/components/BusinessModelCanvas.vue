@@ -47,7 +47,7 @@ export default {
         chosenClass: 'chosen', // Class name for the chosen item
         dragClass: 'drag', // Class name for the dragging item,
         forceFallback: false,
-        filter: '.card-editing'
+        handle: '.card-container[not-editing]'
       },
       canvasFields: [
         { key: 'key-partners', label: 'Key Partners', items: [ 'key parnter 1', 'key parnter 2' ] },
@@ -183,7 +183,6 @@ $grey-300 = #E0E0E0
       & > .card-container
         width 30%
         margin-right 1rem
-
 
   // class for the drop placeholder
   .ghost
