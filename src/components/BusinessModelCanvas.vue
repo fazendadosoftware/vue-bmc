@@ -21,14 +21,14 @@
         @start="onDragStart"
         @end="onDragEnd"
         @change="onChange">
-        <card v-for="item in field.items" :key="item.id" :item="item"></card>
+        <card v-for="(item, idx) in field.items" :key="idx" :item="item"></card>
       </draggable>
     </div>
   </div>
 </template>
 
 <script>
-import Card from './Card'
+import Card, { CardItem } from './Card'
 import Draggable from 'vuedraggable'
 
 export default {
@@ -51,14 +51,14 @@ export default {
         forceFallback: false
       },
       canvasFields: [
-        { key: 'key-partners', label: 'Key Partners', items: [ { id: 'kp-1', name: 'Key Partner 1' } ] },
-        { key: 'key-activities', label: 'Key Activities', items: [ { id: 'ka-1', name: 'Key Activity 1' } ] },
-        { key: 'value-propositions', label: 'Value Propositions', items: [] },
+        { key: 'key-partners', label: 'Key Partners', items: [ new CardItem('kp-1', 'Key Partner 1', 1) ] },
+        { key: 'key-activities', label: 'Key Activities', items: [ new CardItem('ka-1', 'Key Activity 1', 2) ] },
+        { key: 'value-propositions', label: 'Value Propositions', items: ['some string test', 'other string', 'and'] },
         { key: 'customer-relationships', label: 'Customer Relationships', items: [] },
         { key: 'customer-segments', label: 'Customer Segments', items: [] },
         { key: 'key-resources', label: 'Key Resources', items: [] },
         { key: 'channels', label: 'Channels', items: [] },
-        { key: 'cost-structure', label: 'Cost Structure', items: [] },
+        { key: 'cost-structure', label: 'Cost Structure', items: ['1', '2', '3', '4', '5'] },
         { key: 'revenue-streams', label: 'Revenue Streams', items: [] }
       ],
       drag: false,
@@ -141,8 +141,12 @@ $grey-300 = #E0E0E0
   display flex
   flex-flow row wrap
   align-items flex-start
+  justify-content space-around
   & > .card-container
-    width 45%
+    margin-right 1rem
+    margin-bottom 1rem
+    width calc(50% - 2rem)
+    box-sizing border-box
 
 .grid-item
   display flex
@@ -163,8 +167,10 @@ $grey-300 = #E0E0E0
 
   .dropzone
     flex 1
+    padding-left 1rem
     & > .card-container
-      margin 1rem
+      margin-bottom 1rem
+      margin-right 1rem
 
   // class for the drop placeholder
   .ghost
