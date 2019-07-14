@@ -7,9 +7,7 @@
       :field="field.key">
       <div class="grid-item-header">
         <div>{{field.label}}</div>
-        <div style="cursor: pointer" >
-          <img src="@/assets/img/insert-button.png" width="20"/>
-        </div>
+       <font-awesome-icon icon="plus" style="cursor:pointer; padding:0.5rem"/>
       </div>
       <draggable
         tag="div"
@@ -44,7 +42,7 @@ export default {
         sort: false,
         delay: 0,
         disabled: false,
-        animation: 50,
+        animation: 150,
         ghostClass: 'ghost', // Class name for the drop placeholder
         chosenClass: 'chosen', // Class name for the chosen item
         dragClass: 'drag', // Class name for the dragging item,
@@ -58,7 +56,7 @@ export default {
         { key: 'customer-segments', label: 'Customer Segments', items: [] },
         { key: 'key-resources', label: 'Key Resources', items: [] },
         { key: 'channels', label: 'Channels', items: [] },
-        { key: 'cost-structure', label: 'Cost Structure', items: ['1', '2', '3', '4', '5'] },
+        { key: 'cost-structure', label: 'Cost Structure', items: [] },
         { key: 'revenue-streams', label: 'Revenue Streams', items: [] }
       ],
       drag: false,
@@ -176,10 +174,12 @@ $grey-300 = #E0E0E0
   .ghost
     opacity 0
   // class for the chosen item (applied when user click on draggable element)
+  /*
   .chosen
     transform rotate(3deg)
     -moz-transform rotate(3deg)
     -webkit-transform rotate(3deg)
+  */
   // class for the dragging item (applied when user starts dragging the element)
   .drag
     transform rotate(3deg)
