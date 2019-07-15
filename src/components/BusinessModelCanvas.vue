@@ -5,7 +5,7 @@
       :key="field.key"
       :class="`grid-item ${field.key} ${field.key === targetDragField ? 'target' : ''}`"
       :field="field.key">
-      <div class="grid-item-header">
+      <div class="grid-item-header noselect">
         <div>{{field.label}}</div>
        <font-awesome-icon @click="addCard(field.key)" icon="plus" style="cursor:pointer; padding:0.5rem"/>
       </div>
@@ -138,6 +138,18 @@ export default {
 }
 </script>
 
+<style>
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+</style>
+
 <style lang="stylus" scoped>
 $grey-100 = #f5f5f5
 $grey-200 = #eeeeee
@@ -153,7 +165,8 @@ $border-color = $grey-500
 $border-width = 1px
 
 .grid-container
-  height 100%
+  box-sizing border-box
+  min-height 100%
   border-bottom $border-width solid $border-color
   border-left $border-width solid $border-color
   display grid

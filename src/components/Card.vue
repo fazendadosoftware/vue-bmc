@@ -4,6 +4,7 @@
     :class="editing ? 'card-editing' : ''"
     @mouseover="hover = true"
     @mouseleave="hover = false"
+    @dblclick="editing = true"
     :not-editing="!editing"
     v-closable="{
       exclude: ['div.card-container'],
@@ -23,7 +24,7 @@
       </transition>
     </div>
     <div class="body">
-      <vue-markdown v-if="!editing" :source="editedContent"/>
+      <vue-markdown class="noselect" v-if="!editing" :source="editedContent"/>
       <textarea
         v-show="editing"
         rows="1"
@@ -79,7 +80,13 @@ export default {
         return
       }
       // if the user starts to edit the card, focus on the text area element
-      if (val && !oldVal) this.$nextTick(() => { this.$refs.textarea.focus() })
+      if (val && !oldVal) {
+        this.$nextTick(() => {
+          const target = this.$refs.textarea
+          this.autosize({ target })
+          this.$refs.textarea.focus()
+        })
+      }
     }
   },
   created () {
