@@ -152,14 +152,13 @@ export default {
       items.splice(itemIdx, 1)
       this.$emit('delete-item', { fieldKey: key, itemIdx, content })
     },
-    test: debounce(str => {
-      console.log('IT WORKS', str)
+    requestUpdate: debounce(touchedFields => {
+      console.log('UPDATING FIELDS', JSON.stringify(Object.keys(touchedFields)))
     }, 1000)
   },
   watch: {
     touchedFields (val) {
-      this.test('IW TOWKRS????!!!')
-      // this.alertDebounce('ARGUMENT!')
+      this.requestUpdate(val)
     }
   }
 }
