@@ -141,8 +141,13 @@ export default {
 <style lang="stylus" scoped>
 $border-color = black
 $border-width = 1px
+$grey-100 = #f5f5f5
 $grey-200 = #eeeeee
 $grey-300 = #E0E0E0
+$grey-700 = #616161
+$grey-800 = #424242
+
+$green-100 = #C8E6C9
 
 .grid-container
   height 100%
@@ -152,6 +157,8 @@ $grey-300 = #E0E0E0
   // 10 columns, min width: 100px
   grid-template-columns repeat(10, minmax(100px, 1fr))
   grid-auto-rows minmax(min-content, auto)
+  color $grey-800
+  background $grey-200
 
 .key-partners
   grid-column 1 / 3
@@ -195,7 +202,6 @@ $grey-300 = #E0E0E0
   transition background-color 0.2s ease
   border-top $border-width solid $border-color
   border-right $border-width solid $border-color
-  background $grey-200
   &.target
     background $grey-300
   &-header
@@ -244,14 +250,4 @@ $grey-300 = #E0E0E0
     -moz-transform rotate(3deg)
     -webkit-transform rotate(3deg)
     opacity 1
-
-  .shadow-1
-    box-shadow 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
-
-  .shadow-2
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
-
-  .shadow-3
-    box-shadow 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)
-
 </style>

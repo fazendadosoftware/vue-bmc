@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card-container card-handle shadow-2"
+    class="card-container card-handle shadow-1"
     :class="editing ? 'card-editing' : ''"
     @mouseover="hover = true"
     @mouseleave="hover = false"
@@ -99,6 +99,7 @@ export default {
     background white
     position relative
     box-sizing border-box
+    border-radius 2px
     & > :not(.card-editing)
       cursor pointer
     & > .actions
@@ -121,6 +122,7 @@ export default {
     font-size 0.8rem
     width 100%
     height 100%
+    padding 0.5rem
 
   textarea
     width 100%
@@ -132,12 +134,20 @@ export default {
     outline none !important
     resize none
     box-sizing border-box
-    border-radius 3px
     padding 12.8px 0
 
   .fade-enter-active, .fade-leave-active
     transition opacity .5s
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
     opacity 0
+
+  .shadow-1
+    box-shadow 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+
+  .shadow-2
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+
+  .shadow-3
+    box-shadow 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)
 
 </style>
