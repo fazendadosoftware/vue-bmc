@@ -2,7 +2,6 @@
   <div
     class="card-container card-handle shadow-2"
     :class="editing ? 'card-editing' : ''"
-    :style="editing ? 'padding-top: 35px' : ''"
     @mouseover="hover = true"
     @mouseleave="hover = false"
     :not-editing="!editing"
@@ -105,8 +104,8 @@ export default {
     & > .actions
       position absolute
       right 0
-      top 0
-      padding 0.5rem
+      bottom 0
+      padding-bottom 0.5rem
       display flex
       align-items center
       > svg, .fa-layers
@@ -128,26 +127,17 @@ export default {
     height 100%
     border none
     font-family inherit
-    font-size inherit
+    font-size 0.8rem
     line-height 120%
     outline none !important
     resize none
     box-sizing border-box
     border-radius 3px
+    padding 12.8px 0
 
   .fade-enter-active, .fade-leave-active
     transition opacity .5s
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
     opacity 0
-
-  
-  .shadow-1
-  box-shadow 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
-
-  .shadow-2
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
-
-  .shadow-3
-    box-shadow 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)
 
 </style>

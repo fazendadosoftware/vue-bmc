@@ -1,18 +1,38 @@
 <template>
   <div id="app">
-    <bmc />
+    <bmc
+      :keyPartners="keyPartners"
+      :keyActivities="keyActivities"
+      :valuePropositions="valuePropositions"
+      :customerRelationships="customerRelationships"
+      :customerSegments="customerSegments"
+      :keyResources="keyResources"
+      :channels="channels"
+      :costStructure="costStructure"
+      :revenueStreams="revenueStreams"/>
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld'
 import bmc from './components/BusinessModelCanvas'
 
 export default {
   name: 'app',
   components: {
     bmc
-    // HelloWorld
+  },
+  data () {
+    return {
+      keyPartners: ['key partner'],
+      keyActivities: ['some activities'],
+      valuePropositions: [],
+      customerRelationships: [],
+      customerSegments: [],
+      keyResources: [],
+      channels: [],
+      costStructure: [],
+      revenueStreams: []
+    }
   }
 }
 </script>

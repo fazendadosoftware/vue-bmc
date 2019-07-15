@@ -18,7 +18,6 @@
         v-bind="dragOptions"
         @start="onDragStart"
         @end="onDragEnd"
-        @change="onChange"
         :ref="field.key">
         <card
           v-for="(item, idx) in field.items"
@@ -57,6 +56,17 @@ export default {
     Card,
     Draggable
   },
+  props: {
+    keyPartners: { type: Array, required: true },
+    keyActivities: { type: Array, required: true },
+    valuePropositions: { type: Array, required: true },
+    customerRelationships: { type: Array, required: true },
+    customerSegments: { type: Array, required: true },
+    keyResources: { type: Array, required: true },
+    channels: { type: Array, required: true },
+    costStructure: { type: Array, required: true },
+    revenueStreams: { type: Array, required: true }
+  },
   data () {
     return {
       dragOptions: {
@@ -71,19 +81,23 @@ export default {
         forceFallback: false,
         handle: '.card-container[not-editing]'
       },
-      canvasFields: [
-        { key: 'key-partners', label: 'Key Partners', items: [] },
-        { key: 'key-activities', label: 'Key Activities', items: [] },
-        { key: 'value-propositions', label: 'Value Propositions', items: [] },
-        { key: 'customer-relationships', label: 'Customer Relationships', items: [] },
-        { key: 'customer-segments', label: 'Customer Segments', items: [] },
-        { key: 'key-resources', label: 'Key Resources', items: [] },
-        { key: 'channels', label: 'Channels', items: [] },
-        { key: 'cost-structure', label: 'Cost Structure', items: [] },
-        { key: 'revenue-streams', label: 'Revenue Streams', items: [] }
-      ],
       drag: false,
       targetDragField: ''
+    }
+  },
+  computed: {
+    canvasFields () {
+      return [
+        { key: 'key-partners', label: 'Key Partners', items: this.keyPartners },
+        { key: 'key-activities', label: 'Key Activities', items: this.keyActivities },
+        { key: 'value-propositions', label: 'Value Propositions', items: this.valuePropositions },
+        { key: 'customer-relationships', label: 'Customer Relationships', items: this.customerRelationships },
+        { key: 'customer-segments', label: 'Customer Segments', items: this.customerSegments },
+        { key: 'key-resources', label: 'Key Resources', items: this.keyResources },
+        { key: 'channels', label: 'Channels', items: this.channels },
+        { key: 'cost-structure', label: 'Cost Structure', items: this.costStructure },
+        { key: 'revenue-streams', label: 'Revenue Streams', items: this.revenueStreams }
+      ]
     }
   },
   methods: {
@@ -93,11 +107,6 @@ export default {
     onDragEnd (evt) {
       this.drag = false
       this.targetDragField = ''
-    },
-    // Called when dragging element changes position
-    onChange (e) {
-      console.log(`%cGroup Change:`, 'background: green; color: white', e)
-      console.log('FIELDS', this.canvasFields)
     },
     onDragMove (evt) {
       const { to } = evt
@@ -128,6 +137,7 @@ export default {
   }
 }
 </script>
+
 <style lang="stylus" scoped>
 $border-color = black
 $border-width = 1px
@@ -234,5 +244,14 @@ $grey-300 = #E0E0E0
     -moz-transform rotate(3deg)
     -webkit-transform rotate(3deg)
     opacity 1
+
+  .shadow-1
+    box-shadow 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+
+  .shadow-2
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+
+  .shadow-3
+    box-shadow 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)
 
 </style>
