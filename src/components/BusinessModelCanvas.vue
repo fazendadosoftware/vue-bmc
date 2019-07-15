@@ -139,15 +139,18 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-$border-color = black
-$border-width = 1px
 $grey-100 = #f5f5f5
 $grey-200 = #eeeeee
 $grey-300 = #E0E0E0
+$grey-500 = #9E9E9E
+$grey-600 = #757575
 $grey-700 = #616161
 $grey-800 = #424242
 
 $green-100 = #C8E6C9
+
+$border-color = $grey-500
+$border-width = 1px
 
 .grid-container
   height 100%
@@ -157,7 +160,7 @@ $green-100 = #C8E6C9
   // 10 columns, min width: 100px
   grid-template-columns repeat(10, minmax(100px, 1fr))
   grid-auto-rows minmax(min-content, auto)
-  color $grey-800
+  color $grey-700
   background $grey-200
 
 .key-partners
