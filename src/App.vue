@@ -9,7 +9,9 @@
       :keyResources="keyResources"
       :channels="channels"
       :costStructure="costStructure"
-      :revenueStreams="revenueStreams"/>
+      :revenueStreams="revenueStreams"
+      @delete-item="itemDeleteHandler"
+      />
   </div>
 </template>
 
@@ -24,7 +26,7 @@ export default {
   data () {
     return {
       keyPartners: ['key partner'],
-      keyActivities: ['some activities'],
+      keyActivities: ['some activities', 'cucuia'],
       valuePropositions: [],
       customerRelationships: [],
       customerSegments: [],
@@ -32,6 +34,11 @@ export default {
       channels: [],
       costStructure: [],
       revenueStreams: []
+    }
+  },
+  methods: {
+    itemDeleteHandler ({ fieldKey, itemIdx, content }) {
+      console.log('DELETING', fieldKey, itemIdx, content)
     }
   }
 }

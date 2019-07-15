@@ -1,5 +1,6 @@
 <template>
   <div class="grid-container">
+    {{touchedFields}}
     <div
       v-for="(field, fieldIdx) in canvasFields"
       :key="field.key"
@@ -50,6 +51,15 @@ Vue.component('vue-markdown', VueMarkdown)
 
 Vue.use(VueCloseable)
 
+const debounce = (callback, wait) => {
+  let timeout
+  return (...args) => {
+    const context = this
+    clearTimeout(timeout)
+    timeout = setTimeout(() => callback.apply(context, args), wait)
+  }
+}
+
 export default {
   name: 'BusinessModelCanvas',
   components: {
@@ -82,7 +92,8 @@ export default {
         handle: '.card-container[not-editing]'
       },
       drag: false,
-      targetDragField: ''
+      targetDragField: '',
+      touchedFields: {}
     }
   },
   computed: {
@@ -129,25 +140,39 @@ export default {
       console.log(`${new Date().toISOString()} adding card ${field}`)
     },
     onCardContentChanged (fieldIdx, itemIndex, content) {
-      this.canvasFields[fieldIdx].items[itemIndex] = content
+      const canvasField = this.canvasFields[fieldIdx]
+      const { items, key } = canvasField
+      items[itemIndex] = content
+      this.touchedFields = { ...this.touchedFields, [key]: true }
     },
     onCardDelete (fieldIdx, itemIdx) {
-      this.canvasFields[fieldIdx].items.splice(itemIdx, 1)
+      const canvasField = this.canvasFields[fieldIdx]
+      const { items, key } = canvasField
+      const content = items[itemIdx]
+      items.splice(itemIdx, 1)
+      this.$emit('delete-item', { fieldKey: key, itemIdx, content })
+    },
+    test: debounce(str => {
+      console.log('IT WORKS', str)
+    }, 1000)
+  },
+  watch: {
+    touchedFields (val) {
+      this.test('IW TOWKRS????!!!')
+      // this.alertDebounce('ARGUMENT!')
     }
   }
 }
 </script>
 
-<style>
-.noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
-}
+<style lang="stylus">
+.noselect
+  -webkit-touch-callout none /* iOS Safari */
+    -webkit-user-select none /* Safari */
+     -khtml-user-select none /* Konqueror HTML */
+       -moz-user-select none /* Firefox */
+        -ms-user-select none /* Internet Explorer/Edge */
+            user-select none /* Non-prefixed version, currently supported by Chrome and Opera */
 </style>
 
 <style lang="stylus" scoped>
