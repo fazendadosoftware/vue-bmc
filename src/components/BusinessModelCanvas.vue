@@ -116,8 +116,12 @@ export default {
       this.drag = true
     },
     onDragEnd (evt) {
+      const { to, from } = evt
+      const sourceField = from.className.split(' ').filter(cl => cl !== 'dropzone').shift()
+      const targetField = to.className.split(' ').filter(cl => cl !== 'dropzone').shift()
       this.drag = false
       this.targetDragField = ''
+      this.touchedFields = { ...this.touchedFields, [sourceField]: true, [targetField]: true }
     },
     onDragMove (evt) {
       const { to } = evt
@@ -152,13 +156,20 @@ export default {
       items.splice(itemIdx, 1)
       this.$emit('delete-item', { fieldKey: key, itemIdx, content })
     },
-    requestUpdate: debounce(touchedFields => {
-      console.log('UPDATING FIELDS', JSON.stringify(Object.keys(touchedFields)))
+    requestUpdate: debounce(ctx => {
+      const { touchedFields } = ctx
+      ctx.$emit('update', touchedFields)
+      ctx.touchedFields = {}
     }, 1000)
   },
   watch: {
-    touchedFields (val) {
-      this.requestUpdate(val)
+    touchedFields (val, oldVal) {
+      const fieldKeys = Object.keys(val)
+      const oldFieldKeys = Object.keys(oldVal)
+      if (!fieldKeys && !oldFieldKeys) return
+      console.log(Object.keys(val).length, Object.keys(oldVal).length)
+      console.log('TOUCHJED FIELDS', val, oldVal, !fieldKeys && !oldFieldKeys)
+      this.requestUpdate(this)
     }
   }
 }

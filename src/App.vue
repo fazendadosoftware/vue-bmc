@@ -1,16 +1,17 @@
 <template>
   <div id="app">
     <bmc
-      :keyPartners="keyPartners"
-      :keyActivities="keyActivities"
-      :valuePropositions="valuePropositions"
-      :customerRelationships="customerRelationships"
-      :customerSegments="customerSegments"
-      :keyResources="keyResources"
+      :key-partners="keyPartners"
+      :key-activities="keyActivities"
+      :value-propositions="valuePropositions"
+      :customer-relationships="customerRelationships"
+      :customer-segments="customerSegments"
+      :key-resources="keyResources"
       :channels="channels"
-      :costStructure="costStructure"
-      :revenueStreams="revenueStreams"
+      :cost-structure="costStructure"
+      :revenue-streams="revenueStreams"
       @delete-item="itemDeleteHandler"
+      @update="updateHandler"
       />
   </div>
 </template>
@@ -27,7 +28,7 @@ export default {
     return {
       keyPartners: ['key partner'],
       keyActivities: ['some activities', 'cucuia'],
-      valuePropositions: [],
+      valuePropositions: ['some value proposition'],
       customerRelationships: [],
       customerSegments: [],
       keyResources: [],
@@ -39,6 +40,9 @@ export default {
   methods: {
     itemDeleteHandler ({ fieldKey, itemIdx, content }) {
       console.log('DELETING', fieldKey, itemIdx, content)
+    },
+    updateHandler (updatedFieldKeys) {
+      console.log('PARENT UPDATE', updatedFieldKeys)
     }
   }
 }
