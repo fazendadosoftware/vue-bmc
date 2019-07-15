@@ -1,6 +1,6 @@
 <template>
   <div class="grid-container">
-    {{touchedFields}}
+    {{ touchedFields }}
     <div
       v-for="(field, fieldIdx) in canvasFields"
       :key="field.key"
@@ -152,23 +152,23 @@ export default {
     onCardDelete (fieldIdx, itemIdx) {
       const canvasField = this.canvasFields[fieldIdx]
       const { items, key } = canvasField
-      const content = items[itemIdx]
+      // const content = items[itemIdx]
       items.splice(itemIdx, 1)
-      this.$emit('delete-item', { fieldKey: key, itemIdx, content })
+      this.touchedFields = { ...this.touchedFields, [key]: true }
+      // this.$emit('delete-item', { fieldKey: key, itemIdx, content })
     },
     requestUpdate: debounce(ctx => {
-      const { touchedFields } = ctx
-      ctx.$emit('update', touchedFields)
+      let { touchedFields } = ctx
+      const fieldKeys = Object.keys(touchedFields).sort()
+      if (!fieldKeys.length) return
+      ctx.$emit('update', fieldKeys)
       ctx.touchedFields = {}
     }, 1000)
   },
   watch: {
-    touchedFields (val, oldVal) {
+    touchedFields (val) {
       const fieldKeys = Object.keys(val)
-      const oldFieldKeys = Object.keys(oldVal)
-      if (!fieldKeys && !oldFieldKeys) return
-      console.log(Object.keys(val).length, Object.keys(oldVal).length)
-      console.log('TOUCHJED FIELDS', val, oldVal, !fieldKeys && !oldFieldKeys)
+      if (!fieldKeys.length) return
       this.requestUpdate(this)
     }
   }

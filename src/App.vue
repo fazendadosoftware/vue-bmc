@@ -10,7 +10,6 @@
       :channels="channels"
       :cost-structure="costStructure"
       :revenue-streams="revenueStreams"
-      @delete-item="itemDeleteHandler"
       @update="updateHandler"
       />
   </div>
@@ -38,11 +37,8 @@ export default {
     }
   },
   methods: {
-    itemDeleteHandler ({ fieldKey, itemIdx, content }) {
-      console.log('DELETING', fieldKey, itemIdx, content)
-    },
     updateHandler (updatedFieldKeys) {
-      console.log('PARENT UPDATE', updatedFieldKeys)
+      console.log('PARENT UPDATE', updatedFieldKeys, this.keyActivities)
     }
   }
 }
