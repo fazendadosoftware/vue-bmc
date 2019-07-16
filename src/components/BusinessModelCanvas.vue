@@ -1,6 +1,5 @@
 <template>
   <div class="grid-container">
-    {{ touchedFields }}
     <div
       v-for="(field, fieldIdx) in canvasFields"
       :key="field.key"
@@ -67,6 +66,7 @@ export default {
     Draggable
   },
   props: {
+    updateDelay: { type: Number, required: false, default: 1000 },
     keyPartners: { type: Array, required: true },
     keyActivities: { type: Array, required: true },
     valuePropositions: { type: Array, required: true },
@@ -141,7 +141,6 @@ export default {
         const recentlyAddedCard = cards[cards.length - 1]
         setTimeout(() => { recentlyAddedCard.editing = true }, 50)
       })
-      console.log(`${new Date().toISOString()} adding card ${field}`)
     },
     onCardContentChanged (fieldIdx, itemIndex, content) {
       const canvasField = this.canvasFields[fieldIdx]
@@ -152,25 +151,29 @@ export default {
     onCardDelete (fieldIdx, itemIdx) {
       const canvasField = this.canvasFields[fieldIdx]
       const { items, key } = canvasField
-      // const content = items[itemIdx]
       items.splice(itemIdx, 1)
       this.touchedFields = { ...this.touchedFields, [key]: true }
-      // this.$emit('delete-item', { fieldKey: key, itemIdx, content })
     },
-    requestUpdate: debounce(ctx => {
-      let { touchedFields } = ctx
-      const fieldKeys = Object.keys(touchedFields).sort()
-      if (!fieldKeys.length) return
-      ctx.$emit('update', fieldKeys)
-      ctx.touchedFields = {}
-    }, 1000)
+    setRequestUpdate (updateDelay = 1000) {
+      this.requestUpdate = debounce(ctx => {
+        let { touchedFields } = ctx
+        const fieldKeys = Object.keys(touchedFields).sort()
+        if (!fieldKeys.length) return
+        ctx.$emit('update', fieldKeys)
+        ctx.touchedFields = {}
+      }, updateDelay)
+    }
   },
   watch: {
     touchedFields (val) {
       const fieldKeys = Object.keys(val)
       if (!fieldKeys.length) return
       this.requestUpdate(this)
-    }
+    },
+    updateDelay: val => this.setRequestUpdate(val)
+  },
+  created () {
+    this.setRequestUpdate(this.updateDelay)
   }
 }
 </script>

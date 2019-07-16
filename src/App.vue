@@ -9,6 +9,7 @@
       :key-resources="keyResources"
       :channels="channels"
       :cost-structure="costStructure"
+      :update-delay="updateDelay"
       :revenue-streams="revenueStreams"
       @update="updateHandler"
       />
@@ -33,7 +34,8 @@ export default {
       keyResources: [],
       channels: [],
       costStructure: [],
-      revenueStreams: []
+      revenueStreams: [],
+      updateDelay: 1000
     }
   },
   methods: {
