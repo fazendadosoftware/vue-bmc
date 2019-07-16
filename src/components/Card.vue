@@ -97,17 +97,22 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  $grey-100 = #f5f5f5
   $grey-200 = #eeeeee
+
+  $yellow-100 = #FFF9C4
+
+  $border-radius = 2px
 
   .card-container
     transition all .3s ease
     display flex
     flex-flow column
     padding 0.5rem
-    background white
+    background $yellow-100
     position relative
     box-sizing border-box
-    border-radius 2px
+    border-radius $border-radius
     & > :not(.card-editing)
       cursor pointer
     & > .actions
@@ -120,7 +125,7 @@ export default {
       > svg, .fa-layers
         padding 0.3rem
         cursor pointer
-        border-radius 3px
+        border-radius $border-radius
         margin-right 0.5rem
         &:hover
           background $grey-200
@@ -145,6 +150,7 @@ export default {
     resize none
     box-sizing border-box
     padding 12.8px 0
+    background-color $yellow-100
 
   .fade-enter-active, .fade-leave-active
     transition opacity .5s

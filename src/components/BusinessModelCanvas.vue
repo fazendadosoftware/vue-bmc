@@ -199,8 +199,8 @@ $grey-800 = #424242
 
 $green-100 = #C8E6C9
 
-$border-color = $grey-500
-$border-width = 1px
+$border-color = $grey-800
+$border-width = 2px
 
 .grid-container
   box-sizing border-box
@@ -211,8 +211,8 @@ $border-width = 1px
   // 10 columns, min width: 100px
   grid-template-columns repeat(10, minmax(100px, 1fr))
   grid-auto-rows minmax(min-content, auto)
-  color $grey-700
-  background $grey-200
+  color $grey-800
+  background white
 
 .key-partners
   grid-column 1 / 3
@@ -257,7 +257,7 @@ $border-width = 1px
   border-top $border-width solid $border-color
   border-right $border-width solid $border-color
   &.target
-    background $grey-300
+    background $grey-200
   &-header
     display flex
     align-items center
