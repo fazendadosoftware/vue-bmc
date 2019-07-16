@@ -5,6 +5,7 @@
     @mouseover="hover = true"
     @mouseleave="hover = false"
     @dblclick="editing = true"
+    @keyup.stop=""
     :not-editing="!editing"
     v-closable="{
       exclude: ['div.card-container'],

@@ -1,6 +1,6 @@
 {
   "name": "vue-bmc",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve --open",
@@ -43,5 +43,19 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue-template-compiler": "^2.6.10"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fazendadosoftware/vue-bmc.git"
+  },
+  "keywords": ["business", "model", "canvas"],
+  "author": {
+    "email": "paulo@fazendadosoftware.com",
+    "name": "Paulo dos Santos"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fazendadosoftware/vue-bmc/issues"
+  },
+  "homepage": "https://github.com/fazendadosoftware/vue-bmc"
 }
