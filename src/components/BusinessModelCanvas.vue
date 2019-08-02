@@ -41,7 +41,6 @@ import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome
 
 [faPlus, faPen, faTrashAlt, faSlash].forEach(icon => library.add(icon))
 
-Vue.component('vue-markdown', VueMarkdown)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-layers', FontAwesomeLayers)
 
@@ -169,6 +168,9 @@ export default {
   },
   created () {
     this.setRequestUpdate(this.updateDelay)
+    setTimeout(() => {
+      console.log('hi there')
+    }, 5000)
   }
 }
 </script>
