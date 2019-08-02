@@ -34,9 +34,7 @@
 import Vue from 'vue'
 import Card from './Card'
 import Draggable from 'vuedraggable'
-import VueCloseable from '../directives/vue-closeable'
 import 'vue-draggable/polyfills'
-import VueMarkdown from 'vue-markdown'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus, faPen, faSlash, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome'
@@ -46,9 +44,6 @@ import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome
 Vue.component('vue-markdown', VueMarkdown)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-layers', FontAwesomeLayers)
-Vue.component('vue-markdown', VueMarkdown)
-
-Vue.use(VueCloseable)
 
 const debounce = (callback, wait) => {
   let timeout

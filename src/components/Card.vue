@@ -37,8 +37,17 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import VueMarkdown from 'vue-markdown'
+import VueCloseable from '../directives/vue-closeable'
+
+Vue.use(VueCloseable)
+
 export default {
   name: 'Card',
+  components: {
+    VueMarkdown
+  },
   props: {
     content: {
       type: String,
