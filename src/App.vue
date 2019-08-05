@@ -26,7 +26,7 @@ export default {
   },
   data () {
     return {
-      keyPartners: ['key partner'],
+      keyPartners: [{ text: 'key Partner', background: 'green', color: 'white' }],
       keyActivities: ['some activities', 'cucuia'],
       valuePropositions: ['some value proposition'],
       customerRelationships: [],

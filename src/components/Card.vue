@@ -2,6 +2,7 @@
   <div
     class="card-container card-handle shadow-1"
     :class="editing ? 'card-editing' : ''"
+    :style="style"
     @mouseover="hover = true"
     @mouseleave="hover = false"
     @dblclick="editing = true"
@@ -12,6 +13,10 @@
       handler: 'onClose'
     }">
     <div class="actions">
+      <transition name="fade">
+        <div v-if="editing" class="palette">COLOR PALETTE</div>
+      </transition>
+      <div style="flex: 1"/>
       <transition name="fade">
         <font-awesome-icon v-if="editing" icon="trash-alt" @click="editing = false; $emit('delete')"/>
       </transition>
@@ -31,6 +36,7 @@
         rows="1"
         v-model="editedContent"
         @keydown="autosize"
+        :style="style"
         ref="textarea"/>
     </div>
   </div>
@@ -49,10 +55,7 @@ export default {
     VueMarkdown
   },
   props: {
-    content: {
-      type: String,
-      required: true
-    }
+    content: [String, Object]
   },
   data () {
     return {
@@ -61,9 +64,22 @@ export default {
       editedContent: ''
     }
   },
+  computed: {
+    cardText () {
+      return typeof this.content === 'string'
+        ? this.content
+        : typeof this.content === 'object'
+          ? this.content.text
+          : 'invalid content type'
+    },
+    style () {
+      const { background = '#FFF9C4', color = '#2f363d' } = typeof this.content === 'object' ? this.content : {}
+      return `background: ${background}; color: ${color}`
+    }
+  },
   methods: {
     updateEditedContentFromProp () {
-      this.editedContent = this.content
+      this.editedContent = this.cardText
     },
     onClose () {
       if (this.editing) this.editing = false
@@ -72,16 +88,16 @@ export default {
       const { target } = evt
       setTimeout(() => {
         target.style.cssText = 'height:100%;padding:0.5rem'
-        target.style.cssText = `height: calc(${target.scrollHeight}px + 1rem)`
+        target.style.cssText = `height: calc(${target.scrollHeight}px + 1rem); ${this.style}`
       }, 0)
     }
   },
   watch: {
-    content (val) {
+    text (val) {
       this.editedContent = val
     },
     editedContent (val) {
-      if (val !== this.content) this.$emit('changed', val)
+      if (val !== this.cardText) this.$emit('changed', val)
     },
     editing (val, oldVal) {
       // if the user finalized the edition without content, remove that card...
@@ -100,7 +116,7 @@ export default {
     }
   },
   created () {
-    this.editedContent = this.content
+    this.editedContent = this.cardText
   }
 }
 </script>
@@ -118,7 +134,6 @@ export default {
     display flex
     flex-flow column
     padding 0.5rem
-    background $yellow-100
     position relative
     box-sizing border-box
     border-radius $border-radius
@@ -127,26 +142,22 @@ export default {
     & > .actions
       position absolute
       right 0
-      bottom 0
-      padding-bottom 0.5rem
+      width 100%
+      bottom 0.5rem
       display flex
       align-items center
-      > svg, .fa-layers
+      > svg, .fa-layers, .palette
         padding 0.3rem
         cursor pointer
         border-radius $border-radius
         margin-right 0.5rem
-        &:hover
-          background $grey-200
 
   .body
     text-align left
     font-size 0.8rem
     width 100%
     height 100%
-    padding 0.5rem
     overflow-wrap break-word
-    padding 0
 
   textarea
     width 100%
@@ -159,7 +170,7 @@ export default {
     resize none
     box-sizing border-box
     padding 12.8px 0
-    background-color $yellow-100
+    overflow hidden
 
   .fade-enter-active, .fade-leave-active
     transition opacity .5s

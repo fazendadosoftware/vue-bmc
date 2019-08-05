@@ -168,9 +168,6 @@ export default {
   },
   created () {
     this.setRequestUpdate(this.updateDelay)
-    setTimeout(() => {
-      console.log('hi there')
-    }, 5000)
   }
 }
 </script>
