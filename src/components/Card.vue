@@ -13,21 +13,19 @@
       handler: 'onClose'
     }">
     <div class="actions">
-      <transition name="fade">
-        <div v-if="editing" class="palette">COLOR PALETTE</div>
-      </transition>
+      <div v-if="editing && typeof content === 'object'" class="palette">
+        <div
+          v-for="(option, idx) in cardColors"
+          :key="idx" class="color-card"
+          :style="`background:${option.background};color:${option.color}; border: 1px solid ${option.color}`"
+          @click="colorSelectedEvtHandler(option)"/>
+      </div>
       <div style="flex: 1"/>
-      <transition name="fade">
-        <font-awesome-icon v-if="editing" icon="trash-alt" @click="editing = false; $emit('delete')"/>
-      </transition>
-      <transition name="fade">
-        <font-awesome-layers v-if="hover || editing" @click="editing = !editing">
-          <font-awesome-icon icon="pen" />
-          <transition name="fade">
-            <font-awesome-icon v-if="editing" icon="slash" />
-          </transition>
-        </font-awesome-layers>
-      </transition>
+      <font-awesome-icon v-if="editing" icon="trash-alt" @click="editing = false; $emit('delete')"/>
+      <font-awesome-layers v-if="hover || editing" @click="editing = !editing">
+        <font-awesome-icon icon="pen" />
+          <font-awesome-icon v-if="editing" icon="slash" />
+      </font-awesome-layers>
     </div>
     <div class="body">
       <vue-markdown class="noselect" v-if="!editing" :source="editedContent"/>
@@ -55,13 +53,27 @@ export default {
     VueMarkdown
   },
   props: {
-    content: [String, Object]
+    content: [String, Object],
+    cardColors: {
+      type: Array,
+      required: false,
+      default () {
+        return [
+          { background: '#fff59d', color: '#000000' }, // yellow-200
+          { background: '#f44336', color: '#000000' }, // red-500
+          { background: '#4caf50', color: '#000000' }, // green-500
+          { background: '#29b6f6', color: '#000000' } // lightblue-400
+        ]
+      }
+    }
   },
   data () {
     return {
       editing: false,
       hover: false,
-      editedContent: ''
+      editedContent: '',
+      color: '#000000',
+      background: '#fff59d'
     }
   },
   computed: {
@@ -73,8 +85,7 @@ export default {
           : 'invalid content type'
     },
     style () {
-      const { background = '#FFF9C4', color = '#2f363d' } = typeof this.content === 'object' ? this.content : {}
-      return `background: ${background}; color: ${color}`
+      return `background: ${this.background}; color: ${this.color}`
     }
   },
   methods: {
@@ -90,14 +101,20 @@ export default {
         target.style.cssText = 'height:100%;padding:0.5rem'
         target.style.cssText = `height: calc(${target.scrollHeight}px + 1rem); ${this.style}`
       }, 0)
+    },
+    colorSelectedEvtHandler (option) {
+      const { background, color } = option
+      this.background = background
+      this.color = color
+      this.$emit('changed', { ...this.content, background, color })
     }
   },
   watch: {
     text (val) {
       this.editedContent = val
     },
-    editedContent (val) {
-      if (val !== this.cardText) this.$emit('changed', val)
+    editedContent (text) {
+      if (text !== this.cardText) this.$emit('changed', typeof this.content === 'string' ? text : { ...this.content, text })
     },
     editing (val, oldVal) {
       // if the user finalized the edition without content, remove that card...
@@ -113,10 +130,22 @@ export default {
           this.$refs.textarea.focus()
         })
       }
+    },
+    content (val) {
+      if (typeof val === 'object') {
+        const { background = '#fff59d', color = '#000000' } = val
+        this.background = background
+        this.color = color
+      }
     }
   },
   created () {
     this.editedContent = this.cardText
+    if (typeof this.content === 'object') {
+      const { background = '#fff59d', color = '#000000' } = this.content
+      this.background = background
+      this.color = color
+    }
   }
 }
 </script>
@@ -130,13 +159,13 @@ export default {
   $border-radius = 2px
 
   .card-container
-    transition all .3s ease
     display flex
     flex-flow column
-    padding 0.5rem
+    padding 0.5rem 1rem
     position relative
     box-sizing border-box
     border-radius $border-radius
+    padding-bottom 30px
     & > :not(.card-editing)
       cursor pointer
     & > .actions
@@ -147,7 +176,7 @@ export default {
       display flex
       align-items center
       > svg, .fa-layers, .palette
-        padding 0.3rem
+        padding 0.5rem
         cursor pointer
         border-radius $border-radius
         margin-right 0.5rem
@@ -185,5 +214,13 @@ export default {
 
   .shadow-3
     box-shadow 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)
+
+  .palette
+    display flex
+    & .color-card
+      background red
+      margin-right 0.4rem
+      height 20px
+      width 20px
 
 </style>

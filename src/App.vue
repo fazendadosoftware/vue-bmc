@@ -26,7 +26,7 @@ export default {
   },
   data () {
     return {
-      keyPartners: [{ text: 'key Partner', background: 'green', color: 'white' }],
+      keyPartners: [{ text: 'key Partner', background: '#4caf50', color: '#000000' }],
       keyActivities: ['some activities', 'cucuia'],
       valuePropositions: ['some value proposition'],
       customerRelationships: [],
@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     updateHandler (updatedFieldKeys) {
-      console.log('PARENT UPDATE', updatedFieldKeys, this.keyActivities)
+      console.log('PARENT UPDATE', updatedFieldKeys, this.keyPartners)
     }
   }
 }
