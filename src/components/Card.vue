@@ -181,7 +181,8 @@ export default {
 
   .body
     text-align left
-    font-size 0.8rem
+    font-size 1rem
+    line-height 1.3rem
     width 100%
     height 100%
     overflow-wrap break-word
@@ -191,12 +192,12 @@ export default {
     height 100%
     border none
     font-family inherit
-    font-size 0.8rem
-    line-height 120%
+    font-size 1rem
+    line-height 1.3rem
     outline none !important
     resize none
     box-sizing border-box
-    padding 12.8px 0
+    padding 16px 0
     overflow hidden
 
   .fade-enter-active, .fade-leave-active
