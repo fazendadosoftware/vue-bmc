@@ -69,7 +69,8 @@ export default {
     keyResources: { type: Array, required: true },
     channels: { type: Array, required: true },
     costStructure: { type: Array, required: true },
-    revenueStreams: { type: Array, required: true }
+    revenueStreams: { type: Array, required: true },
+    locale: { type: String, required: false, default: 'en' }
   },
   data () {
     return {
@@ -87,26 +88,55 @@ export default {
       },
       drag: false,
       targetDragField: '',
-      touchedFields: {}
+      touchedFields: {},
+      translations: {
+        en: {
+          'key-partners': 'Key Partners',
+          'key-activities': 'Key Activities',
+          'value-propositions': 'Value Propositions',
+          'customer-relationships': 'Customer Relationships',
+          'customer-segments': 'Customer Segments',
+          'key-resources': 'Key Resources',
+          'channels': 'Channels',
+          'cost-structure': 'Cost Structure',
+          'revenue-streams': 'Revenue Streams'
+        },
+        'pt': {
+          'key-partners': 'Parceiros Chave',
+          'key-activities': 'Atividades Chave',
+          'value-propositions': 'Propostas de Valor',
+          'customer-relationships': 'Relacionamento com Clientes',
+          'customer-segments': 'Segmentos de Mercado',
+          'key-resources': 'Recursos Chave',
+          'channels': 'Canais',
+          'cost-structure': 'Estrutura de Custos',
+          'revenue-streams': 'Fontes de Renda'
+        }
+      }
     }
   },
   computed: {
     canvasFields () {
       const canvasFields = [
-        { key: 'key-partners', label: 'Key Partners', items: this.keyPartners },
-        { key: 'key-activities', label: 'Key Activities', items: this.keyActivities },
-        { key: 'value-propositions', label: 'Value Propositions', items: this.valuePropositions },
-        { key: 'customer-relationships', label: 'Customer Relationships', items: this.customerRelationships },
-        { key: 'customer-segments', label: 'Customer Segments', items: this.customerSegments },
-        { key: 'key-resources', label: 'Key Resources', items: this.keyResources },
-        { key: 'channels', label: 'Channels', items: this.channels },
-        { key: 'cost-structure', label: 'Cost Structure', items: this.costStructure },
-        { key: 'revenue-streams', label: 'Revenue Streams', items: this.revenueStreams }
-      ]
+        { key: 'key-partners', items: this.keyPartners },
+        { key: 'key-activities', items: this.keyActivities },
+        { key: 'value-propositions', items: this.valuePropositions },
+        { key: 'customer-relationships', items: this.customerRelationships },
+        { key: 'customer-segments', items: this.customerSegments },
+        { key: 'key-resources', items: this.keyResources },
+        { key: 'channels', items: this.channels },
+        { key: 'cost-structure', items: this.costStructure },
+        { key: 'revenue-streams', items: this.revenueStreams }
+      ].map(item => { return { ...item, label: this.translate(item.key) } })
       return canvasFields
     }
   },
   methods: {
+    translate (key) {
+      return this.translations[this.locale]
+        ? this.translations[this.locale][key]
+        : this.translations['en'][key]
+    },
     onDragStart (evt) {
       this.drag = true
     },

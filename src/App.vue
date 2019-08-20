@@ -11,6 +11,7 @@
       :cost-structure="costStructure"
       :update-delay="updateDelay"
       :revenue-streams="revenueStreams"
+      :locale="locale"
       @update="updateHandler"
       />
   </div>
@@ -35,7 +36,8 @@ export default {
       channels: [],
       costStructure: [],
       revenueStreams: [],
-      updateDelay: 100
+      updateDelay: 100,
+      locale: 'pt'
     }
   },
   methods: {
