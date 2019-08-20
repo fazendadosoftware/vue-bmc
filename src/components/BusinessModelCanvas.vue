@@ -60,7 +60,7 @@ export default {
     Draggable
   },
   props: {
-    updateDelay: { type: Number, required: false, default: 1000 },
+    updateDelay: { type: Number, required: false, default: 0 },
     keyPartners: { type: Array, required: true },
     keyActivities: { type: Array, required: true },
     valuePropositions: { type: Array, required: true },
@@ -92,7 +92,7 @@ export default {
   },
   computed: {
     canvasFields () {
-      return [
+      const canvasFields = [
         { key: 'key-partners', label: 'Key Partners', items: this.keyPartners },
         { key: 'key-activities', label: 'Key Activities', items: this.keyActivities },
         { key: 'value-propositions', label: 'Value Propositions', items: this.valuePropositions },
@@ -103,6 +103,7 @@ export default {
         { key: 'cost-structure', label: 'Cost Structure', items: this.costStructure },
         { key: 'revenue-streams', label: 'Revenue Streams', items: this.revenueStreams }
       ]
+      return canvasFields
     }
   },
   methods: {
@@ -139,7 +140,7 @@ export default {
     onCardContentChanged (fieldIdx, itemIndex, content) {
       const canvasField = this.canvasFields[fieldIdx]
       const { items, key } = canvasField
-      items[itemIndex] = content
+      items.splice(itemIndex, 1, content)
       this.touchedFields = { ...this.touchedFields, [key]: true }
     },
     onCardDelete (fieldIdx, itemIdx) {

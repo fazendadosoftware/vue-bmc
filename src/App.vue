@@ -35,12 +35,12 @@ export default {
       channels: [],
       costStructure: [],
       revenueStreams: [],
-      updateDelay: 1000
+      updateDelay: 100
     }
   },
   methods: {
     updateHandler (updatedFieldKeys) {
-      console.log('PARENT UPDATE', updatedFieldKeys, this.keyPartners)
+      // console.log('PARENT UPDATE', updatedFieldKeys)
     }
   }
 }

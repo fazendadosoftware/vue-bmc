@@ -13,7 +13,7 @@
       handler: 'onClose'
     }">
     <div class="actions">
-      <div v-if="editing && typeof content === 'object'" class="palette">
+      <div v-if="editing && allowColors" class="palette">
         <div
           v-for="(option, idx) in cardColors"
           :key="idx" class="color-card"
@@ -54,6 +54,11 @@ export default {
   },
   props: {
     content: [String, Object],
+    allowColors: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
     cardColors: {
       type: Array,
       required: false,
@@ -77,21 +82,11 @@ export default {
     }
   },
   computed: {
-    cardText () {
-      return typeof this.content === 'string'
-        ? this.content
-        : typeof this.content === 'object'
-          ? this.content.text
-          : 'invalid content type'
-    },
     style () {
       return `background: ${this.background}; color: ${this.color}`
     }
   },
   methods: {
-    updateEditedContentFromProp () {
-      this.editedContent = this.cardText
-    },
     onClose () {
       if (this.editing) this.editing = false
     },
@@ -106,15 +101,13 @@ export default {
       const { background, color } = option
       this.background = background
       this.color = color
-      this.$emit('changed', { ...this.content, background, color })
+      const { text = this.content } = this.content
+      this.$emit('changed', { text, background, color })
     }
   },
   watch: {
-    text (val) {
-      this.editedContent = val
-    },
     editedContent (text) {
-      if (text !== this.cardText) this.$emit('changed', typeof this.content === 'string' ? text : { ...this.content, text })
+      this.$emit('changed', typeof this.content === 'string' ? text : { ...this.content, text })
     },
     editing (val, oldVal) {
       // if the user finalized the edition without content, remove that card...
@@ -133,18 +126,23 @@ export default {
     },
     content (val) {
       if (typeof val === 'object') {
-        const { background = '#fff59d', color = '#000000' } = val
+        const { background = '#fff59d', color = '#000000', text } = val
         this.background = background
         this.color = color
+        this.editedContent = text
+      } else {
+        this.editedContent = val
       }
     }
   },
   created () {
-    this.editedContent = this.cardText
     if (typeof this.content === 'object') {
-      const { background = '#fff59d', color = '#000000' } = this.content
+      const { background = '#fff59d', color = '#000000', text } = this.content
       this.background = background
       this.color = color
+      this.editedContent = text
+    } else {
+      this.editedContent = this.content
     }
   }
 }
