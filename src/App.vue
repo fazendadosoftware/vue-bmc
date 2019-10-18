@@ -13,8 +13,7 @@
       :revenue-streams="revenueStreams"
       :locale="locale"
       @update="updateHandler"
-      ref="bmc"
-      >
+      ref="bmc">
       <template v-slot:header>
         <h1>Business Model Canvas</h1>
       </template>
