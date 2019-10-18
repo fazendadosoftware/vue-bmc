@@ -95,8 +95,8 @@ export default {
     autosize (evt) {
       const { target } = evt
       setTimeout(() => {
-        target.style.cssText = 'height:100%;padding:0.5rem'
-        target.style.cssText = `height: calc(${target.scrollHeight}px + 1rem); ${this.style}`
+        target.style.cssText = 'height:100%'
+        target.style.cssText = `height: ${target.scrollHeight}px; ${this.style}`
       }, 0)
     },
     colorSelectedEvtHandler (option) {
@@ -177,7 +177,7 @@ export default {
       display flex
       align-items center
       > svg, .fa-layers, .palette
-        padding 0.5rem
+        margin 0.5rem
         cursor pointer
         border-radius $border-radius
         margin-right 0.5rem

@@ -9,7 +9,7 @@
         :field="field.key">
         <div class="grid-item-header noselect">
           <div>{{field.label}}</div>
-        <font-awesome-icon @click="addCard(field.key)" size="xs" icon="plus" style="cursor:pointer; padding:0.5rem"/>
+        <font-awesome-icon @click="addCard(field.key)" size="xs" icon="plus" style="cursor:pointer"/>
         </div>
         <draggable
           tag="div"
