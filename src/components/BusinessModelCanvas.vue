@@ -25,6 +25,7 @@
             v-for="(item, idx) in field.items"
             :key="idx"
             :content="item"
+            :allow-colors="allowColors"
             @delete="onCardDelete(fieldIdx, idx)"
             @changed="onCardContentChanged(fieldIdx, idx, $event)"/>
         </draggable>
@@ -74,7 +75,8 @@ export default {
     channels: { type: Array, required: true },
     costStructure: { type: Array, required: true },
     revenueStreams: { type: Array, required: true },
-    locale: { type: String, required: false, default: 'en' }
+    locale: { type: String, required: false, default: 'en' },
+    allowColors: { type: Boolean, required: false, default: false }
   },
   data () {
     return {

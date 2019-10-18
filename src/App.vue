@@ -12,6 +12,7 @@
       :update-delay="updateDelay"
       :revenue-streams="revenueStreams"
       :locale="locale"
+      :allow-colors="false"
       @update="updateHandler"
       ref="bmc">
       <template v-slot:header>
