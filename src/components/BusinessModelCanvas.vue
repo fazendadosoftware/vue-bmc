@@ -1,33 +1,37 @@
 <template>
-  <div class="grid-container">
-    <div
-      v-for="(field, fieldIdx) in canvasFields"
-      :key="field.key"
-      :class="`grid-item ${field.key} ${field.key === targetDragField ? 'target' : ''}`"
-      :field="field.key">
-      <div class="grid-item-header noselect">
-        <div>{{field.label}}</div>
-       <font-awesome-icon @click="addCard(field.key)" icon="plus" style="cursor:pointer; padding:0.5rem"/>
+  <div class="outer-container">
+    <slot name="header"/>
+    <div class="grid-container">
+      <div
+        v-for="(field, fieldIdx) in canvasFields"
+        :key="field.key"
+        :class="`grid-item ${field.key} ${field.key === targetDragField ? 'target' : ''}`"
+        :field="field.key">
+        <div class="grid-item-header noselect">
+          <div>{{field.label}}</div>
+        <font-awesome-icon @click="addCard(field.key)" size="xs" icon="plus" style="cursor:pointer; padding:0.5rem"/>
+        </div>
+        <draggable
+          tag="div"
+          class="dropzone"
+          :class="`${field.key} ${field.key === targetDragField ? 'target' : ''}`"
+          :list="field.items"
+          :move="onDragMove"
+          v-bind="dragOptions"
+          @start="onDragStart"
+          @end="onDragEnd"
+          :ref="field.key">
+          <card
+            v-for="(item, idx) in field.items"
+            :key="idx"
+            :content="item"
+            @delete="onCardDelete(fieldIdx, idx)"
+            @changed="onCardContentChanged(fieldIdx, idx, $event)"/>
+        </draggable>
       </div>
-      <draggable
-        tag="div"
-        class="dropzone"
-        :class="`${field.key} ${field.key === targetDragField ? 'target' : ''}`"
-        :list="field.items"
-        :move="onDragMove"
-        v-bind="dragOptions"
-        @start="onDragStart"
-        @end="onDragEnd"
-        :ref="field.key">
-        <card
-          v-for="(item, idx) in field.items"
-          :key="idx"
-          :content="item"
-          @delete="onCardDelete(fieldIdx, idx)"
-          @changed="onCardContentChanged(fieldIdx, idx, $event)"/>
-      </draggable>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -101,7 +105,18 @@ export default {
           'cost-structure': 'Cost Structure',
           'revenue-streams': 'Revenue Streams'
         },
-        'pt': {
+        de: {
+          'key-partners': 'Schlüsselpartner',
+          'key-activities': 'Schlüsselaktivitäten',
+          'value-propositions': 'Wertangebote',
+          'customer-relationships': 'Kundenbeziehungen',
+          'customer-segments': 'Kundensegmente',
+          'key-resources': 'Schlüsselressourcen',
+          'channels': 'Kanäle',
+          'cost-structure': 'Kostenstructur',
+          'revenue-streams': 'Einnahmequellen'
+        },
+        pt: {
           'key-partners': 'Parceiros Chave',
           'key-activities': 'Atividades Chave',
           'value-propositions': 'Propostas de Valor',
@@ -217,6 +232,7 @@ export default {
 $grey-100 = #f5f5f5
 $grey-200 = #eeeeee
 $grey-300 = #E0E0E0
+$grey-400 = #BDBDBD
 $grey-500 = #9E9E9E
 $grey-600 = #757575
 $grey-700 = #616161
@@ -224,20 +240,24 @@ $grey-800 = #424242
 
 $green-100 = #C8E6C9
 
-$border-color = $grey-800
+$border-color = $grey-400
 $border-width = 2px
 
+.outer-container
+  height 100%
+  display flex
+  flex-flow column
+
 .grid-container
+  flex-grow 1
   box-sizing border-box
-  min-height 100%
   border-bottom $border-width solid $border-color
   border-left $border-width solid $border-color
   display grid
   // 10 columns, min width: 100px
   grid-template-columns repeat(10, minmax(100px, 1fr))
   grid-auto-rows minmax(min-content, auto)
-  color $grey-800
-  background white
+  color $grey-700
 
 .key-partners
   grid-column 1 / 3
@@ -290,6 +310,7 @@ $border-width = 2px
     padding 1rem
     font-size 1.3rem
     font-weight bold
+    color $grey-700
 
   .dropzone
     flex 1

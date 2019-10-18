@@ -13,11 +13,17 @@
       :revenue-streams="revenueStreams"
       :locale="locale"
       @update="updateHandler"
-      />
+      ref="bmc"
+      >
+      <template v-slot:header>
+        <h1>Business Model Canvas</h1>
+      </template>
+    </bmc>
   </div>
 </template>
 
 <script>
+import { generatePowerPointFromExportContainer } from './helpers/pptxGenerator'
 import bmc from './components/BusinessModelCanvas'
 
 export default {
@@ -37,12 +43,16 @@ export default {
       costStructure: [],
       revenueStreams: [],
       updateDelay: 100,
-      locale: 'pt'
+      locale: 'en'
     }
   },
   methods: {
     updateHandler (updatedFieldKeys) {
       // console.log('PARENT UPDATE', updatedFieldKeys)
+    },
+    exportToPPT () {
+      generatePowerPointFromExportContainer(this.$refs.bmc.$el)
+      console.log('EXPORTING TO PPT')
     }
   }
 }

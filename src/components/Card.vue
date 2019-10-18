@@ -22,10 +22,12 @@
       </div>
       <div style="flex: 1"/>
       <font-awesome-icon v-if="editing" icon="trash-alt" @click="editing = false; $emit('delete')"/>
-      <font-awesome-layers v-if="hover || editing" @click="editing = !editing">
-        <font-awesome-icon icon="pen" />
-          <font-awesome-icon v-if="editing" icon="slash" />
-      </font-awesome-layers>
+      <transition name="fade">
+        <font-awesome-layers v-if="hover || editing" @click="editing = !editing">
+          <font-awesome-icon icon="pen"/>
+            <font-awesome-icon v-if="editing" icon="slash" />
+        </font-awesome-layers>
+      </transition>
     </div>
     <div class="body">
       <vue-markdown class="noselect" v-if="!editing" :source="editedContent"/>
@@ -151,6 +153,7 @@ export default {
 <style lang="stylus" scoped>
   $grey-100 = #f5f5f5
   $grey-200 = #eeeeee
+  $grey-700 = #616161
 
   $yellow-100 = #FFF9C4
 
@@ -201,7 +204,7 @@ export default {
     overflow hidden
 
   .fade-enter-active, .fade-leave-active
-    transition opacity .5s
+    transition opacity .3s
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
     opacity 0
 
@@ -221,5 +224,8 @@ export default {
       margin-right 0.4rem
       height 20px
       width 20px
+
+  .actions
+    color $grey-700
 
 </style>
