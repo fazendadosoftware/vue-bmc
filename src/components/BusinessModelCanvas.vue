@@ -1,34 +1,36 @@
 <template>
   <div class="outer-container">
-    <slot name="header"/>
-    <div class="grid-container">
-      <div
-        v-for="(field, fieldIdx) in canvasFields"
-        :key="field.key"
-        :class="`grid-item ${field.key} ${field.key === targetDragField ? 'target' : ''}`"
-        :field="field.key">
-        <div class="grid-item-header noselect">
-          <div>{{field.label}}</div>
-        <font-awesome-icon @click="addCard(field.key)" size="xs" icon="plus" style="cursor:pointer"/>
+    <div class="inner-container">
+      <slot name="header"/>
+      <div class="grid-container">
+        <div
+          v-for="(field, fieldIdx) in canvasFields"
+          :key="field.key"
+          :class="`grid-item ${field.key} ${field.key === targetDragField ? 'target' : ''}`"
+          :field="field.key">
+          <div class="grid-item-header noselect">
+            <div>{{field.label}}</div>
+          <font-awesome-icon @click="addCard(field.key)" size="xs" icon="plus" style="cursor:pointer"/>
+          </div>
+          <draggable
+            tag="div"
+            class="dropzone"
+            :class="`${field.key} ${field.key === targetDragField ? 'target' : ''}`"
+            :list="field.items"
+            :move="onDragMove"
+            v-bind="dragOptions"
+            @start="onDragStart"
+            @end="onDragEnd"
+            :ref="field.key">
+            <card
+              v-for="(item, idx) in field.items"
+              :key="idx"
+              :content="item"
+              :allow-colors="allowColors"
+              @delete="onCardDelete(fieldIdx, idx)"
+              @changed="onCardContentChanged(fieldIdx, idx, $event)"/>
+          </draggable>
         </div>
-        <draggable
-          tag="div"
-          class="dropzone"
-          :class="`${field.key} ${field.key === targetDragField ? 'target' : ''}`"
-          :list="field.items"
-          :move="onDragMove"
-          v-bind="dragOptions"
-          @start="onDragStart"
-          @end="onDragEnd"
-          :ref="field.key">
-          <card
-            v-for="(item, idx) in field.items"
-            :key="idx"
-            :content="item"
-            :allow-colors="allowColors"
-            @delete="onCardDelete(fieldIdx, idx)"
-            @changed="onCardContentChanged(fieldIdx, idx, $event)"/>
-        </draggable>
       </div>
     </div>
   </div>
@@ -246,6 +248,9 @@ $border-color = $grey-400
 $border-width = 2px
 
 .outer-container
+  height 100%
+
+.inner-container
   height 100%
   display flex
   flex-flow column
