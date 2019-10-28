@@ -314,8 +314,8 @@ $border-width = 2px
     display flex
     align-items center
     justify-content space-between
-    padding 1rem
-    font-size 1.3rem
+    padding 1em
+    font-size 1.3em
     font-weight bold
     color $grey-700
 
