@@ -15,20 +15,21 @@
           <draggable
             tag="div"
             class="dropzone"
-            :class="`${field.key} ${field.key === targetDragField ? 'target' : ''}`"
             :list="field.items"
             :move="onDragMove"
             v-bind="dragOptions"
             @start="onDragStart"
             @end="onDragEnd"
             :ref="field.key">
-            <card
-              v-for="(item, idx) in field.items"
-              :key="idx"
-              :content="item"
-              :allow-colors="allowColors"
-              @delete="onCardDelete(fieldIdx, idx)"
-              @changed="onCardContentChanged(fieldIdx, idx, $event)"/>
+            <div class="cards-container" :class="`${field.key} ${field.key === targetDragField ? 'target' : ''}`">
+              <card
+                v-for="(item, idx) in field.items"
+                :key="idx"
+                :content="item"
+                :allow-colors="allowColors"
+                @delete="onCardDelete(fieldIdx, idx)"
+                @changed="onCardContentChanged(fieldIdx, idx, $event)"/>
+            </div>
           </draggable>
         </div>
       </div>
@@ -323,6 +324,9 @@ $border-width = 2px
       text-align left
 
   .dropzone
+    flex 1
+
+  .cards-container
     flex 1
     display flex
     flex-flow column
