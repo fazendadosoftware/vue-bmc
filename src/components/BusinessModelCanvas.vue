@@ -15,6 +15,7 @@
           <draggable
             tag="div"
             class="dropzone"
+            :class="`${field.key} ${field.key === targetDragField ? 'target' : ''}`"
             :list="field.items"
             :move="onDragMove"
             v-bind="dragOptions"

@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     updateHandler (updatedFieldKeys) {
-      // console.log('PARENT UPDATE', updatedFieldKeys)
+      console.log('PARENT UPDATE', updatedFieldKeys)
     },
     exportToPPT () {
       generatePowerPointFromExportContainer(this.$refs.bmc.$el)
