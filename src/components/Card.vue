@@ -166,7 +166,9 @@ export default {
     position relative
     box-sizing border-box
     border-radius $border-radius
-    padding-bottom 30px
+    transition all 0.2s ease
+    &.card-editing
+      padding-bottom 30px
     & > :not(.card-editing)
       cursor pointer
     & > .actions
