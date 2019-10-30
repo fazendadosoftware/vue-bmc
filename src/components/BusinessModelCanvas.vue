@@ -9,7 +9,7 @@
           :class="`grid-item ${field.key} ${field.key === targetDragField ? 'target' : ''}`"
           :field="field.key">
           <div class="grid-item-header noselect">
-            <div>{{field.label}}</div>
+            <span class="grid-item-header-title">{{field.label}}</span>
           <font-awesome-icon @click="addCard(field.key)" size="xs" icon="plus" style="cursor:pointer"/>
           </div>
           <draggable
@@ -318,6 +318,9 @@ $border-width = 2px
     font-size 1.3em
     font-weight bold
     color $grey-700
+    &-title
+      flex 1
+      text-align left
 
   .dropzone
     flex 1
