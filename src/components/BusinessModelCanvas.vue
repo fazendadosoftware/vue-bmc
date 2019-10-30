@@ -337,11 +337,12 @@ $border-width = 2px
     &.cost-structure, &.revenue-streams
       display flex
       flex-flow row wrap
-      justify-content center
+      justify-content flex-start
       align-items flex-start
       padding 1rem
+      padding-right 0
       & > .card-container
-        width 30%
+        width calc(33% - 1rem)
         margin-right 1rem
 
   // class for the drop placeholder
