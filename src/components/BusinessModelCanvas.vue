@@ -10,7 +10,11 @@
           :field="field.key">
           <div class="grid-item-header noselect">
             <span class="grid-item-header-title">{{field.label}}</span>
-          <font-awesome-icon @click="addCard(field.key)" size="xs" icon="plus" style="cursor:pointer"/>
+          <div class="add-card-btn">
+            <font-awesome-icon
+              @click="addCard(field.key)"
+              icon="plus"/>
+          </div>
           </div>
           <draggable
             tag="div"
@@ -43,10 +47,10 @@ import Card from './Card'
 import Draggable from 'vuedraggable'
 import 'vue-draggable/polyfills'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPlus, faPen, faSlash, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faPen, faSlash, faTrashAlt, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome'
 
-[faPlus, faPen, faTrashAlt, faSlash].forEach(icon => library.add(icon))
+[faPlus, faPen, faTrashAlt, faSlash, faTimesCircle].forEach(icon => library.add(icon))
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-layers', FontAwesomeLayers)
@@ -233,6 +237,8 @@ export default {
 </style>
 
 <style lang="stylus" scoped>
+@import '../assets/css/normalize.css'
+
 $grey-100 = #f5f5f5
 $grey-200 = #eeeeee
 $grey-300 = #E0E0E0
@@ -244,8 +250,10 @@ $grey-800 = #424242
 
 $green-100 = #C8E6C9
 
-$border-color = $grey-400
-$border-width = 2px
+$border-color = #686868
+
+$border-width-outside = 3px
+$border-width-inside = 2px
 
 .outer-container
   height 100%
@@ -258,8 +266,10 @@ $border-width = 2px
 .grid-container
   flex-grow 1
   box-sizing border-box
-  border-bottom $border-width solid $border-color
-  border-left $border-width solid $border-color
+  border-top $border-width-outside - $border-width-inside solid $border-color
+  border-right $border-width-outside - $border-width-inside solid $border-color
+  border-bottom $border-width-outside solid $border-color
+  border-left $border-width-outside solid $border-color
   display grid
   // 10 columns, min width: 100px
   grid-template-columns repeat(10, minmax(100px, 1fr))
@@ -302,12 +312,25 @@ $border-width = 2px
   grid-column 6 / 11
   grid-row 4
 
+.add-card-btn
+  width 22px
+  height 22px
+  font-size 12px
+  color #333333
+  border-radius 3px
+  border solid 1px #ededed
+  background-color #ffffff
+  display flex
+  align-items center
+  justify-content center
+  cursor pointer
+
 .grid-item
   display flex
   flex-flow column
   transition background-color 0.2s ease
-  border-top $border-width solid $border-color
-  border-right $border-width solid $border-color
+  border-top $border-width-inside solid $border-color
+  border-right $border-width-inside solid $border-color
   &.target
     background $grey-200
   &-header
@@ -315,9 +338,9 @@ $border-width = 2px
     align-items center
     justify-content space-between
     padding 1em
-    font-size 1.3em
+    font-size 14px
     font-weight bold
-    color $grey-700
+    color #333333
     &-title
       flex 1
       text-align left
@@ -332,7 +355,6 @@ $border-width = 2px
       min-width 150px
       max-width 300px
       width calc(100% - 2rem)
-      min-height 80px
       margin-bottom 1rem
     &.cost-structure, &.revenue-streams
       display flex

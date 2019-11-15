@@ -1,50 +1,32 @@
 <template>
   <div
     class="card-container card-handle shadow-1"
-    :class="editing ? 'card-editing' : ''"
     :style="style"
     @mouseover="hover = true"
     @mouseleave="hover = false"
-    @dblclick="editing = true"
-    @keyup.stop=""
+    @click="editing = true; $refs.contentBox ? $refs.contentBox.focus() : ''"
     :not-editing="!editing"
-    v-closable="{
-      exclude: ['div.card-container'],
-      handler: 'onClose'
-    }">
-    <div class="actions">
-      <div v-if="editing && allowColors" class="palette">
-        <div
-          v-for="(option, idx) in cardColors"
-          :key="idx" class="color-card"
-          :style="`background:${option.background};color:${option.color}; border: 1px solid ${option.color}`"
-          @click="colorSelectedEvtHandler(option)"/>
-      </div>
-      <div style="flex: 1"/>
-      <font-awesome-icon v-if="editing" icon="trash-alt" @click="editing = false; $emit('delete')"/>
-      <transition name="fade">
-        <font-awesome-layers v-if="hover || editing" @click="editing = !editing">
-          <font-awesome-icon icon="pen"/>
-            <font-awesome-icon v-if="editing" icon="slash" />
-        </font-awesome-layers>
-      </transition>
+    @keyup.stop=""
+    v-closable="{ exclude: ['div.card-container'], handler: 'onClose' }">
+    <transition name="fade">
+      <font-awesome-icon
+        v-if="hover || editing"
+        :editing="editing"
+        class="close-card-btn"
+        icon="times-circle"
+        @click="editing = false; $emit('delete')"/>
+    </transition>
+    <div class="body"
+      contenteditable
+      v-html="editedContent.replace(/\n/g, '<br />')"
+      @blur="contentEditEvtHandler"
+      ref="contentBox"/>
     </div>
-    <div class="body">
-      <vue-markdown class="noselect" v-if="!editing" :source="editedContent"/>
-      <textarea
-        v-show="editing"
-        rows="1"
-        v-model="editedContent"
-        @keydown="autosize"
-        :style="style"
-        ref="textarea"/>
-    </div>
-  </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import VueMarkdown from 'vue-markdown'
+// import VueMarkdown from 'vue-markdown'
 import VueCloseable from '../directives/vue-closeable'
 
 Vue.use(VueCloseable)
@@ -52,7 +34,7 @@ Vue.use(VueCloseable)
 export default {
   name: 'Card',
   components: {
-    VueMarkdown
+    // VueMarkdown
   },
   props: {
     content: [String, Object],
@@ -66,7 +48,7 @@ export default {
       required: false,
       default () {
         return [
-          { background: '#fff59d', color: '#000000' }, // yellow-200
+          { background: '#fff4b4', color: '#000000' },
           { background: '#f44336', color: '#000000' }, // red-500
           { background: '#4caf50', color: '#000000' }, // green-500
           { background: '#29b6f6', color: '#000000' } // lightblue-400
@@ -80,7 +62,7 @@ export default {
       hover: false,
       editedContent: '',
       color: '#000000',
-      background: '#fff59d'
+      background: '#fff4b4'
     }
   },
   computed: {
@@ -89,15 +71,12 @@ export default {
     }
   },
   methods: {
+    contentEditEvtHandler (evt) {
+      const { innerText } = evt.target
+      this.$emit('changed', innerText)
+    },
     onClose () {
       if (this.editing) this.editing = false
-    },
-    autosize (evt) {
-      const { target } = evt
-      setTimeout(() => {
-        target.style.cssText = 'height:100%'
-        target.style.cssText = `height: ${target.scrollHeight}px; ${this.style}`
-      }, 0)
     },
     colorSelectedEvtHandler (option) {
       const { background, color } = option
@@ -115,15 +94,6 @@ export default {
       // if the user finalized the edition without content, remove that card...
       if (!val && oldVal && !this.editedContent) {
         this.$emit('delete')
-        return
-      }
-      // if the user starts to edit the card, focus on the text area element
-      if (val && !oldVal) {
-        this.$nextTick(() => {
-          const target = this.$refs.textarea
-          this.autosize({ target })
-          this.$refs.textarea.focus()
-        })
       }
     },
     content (val) {
@@ -146,64 +116,64 @@ export default {
     } else {
       this.editedContent = this.content
     }
+  },
+  mounted () {
+    if (!this.editedContent && this.$refs.contentBox) this.$refs.contentBox.focus()
   }
 }
 </script>
+
+<style lang="stylus">
+  p
+    margin 0
+  textarea
+    padding 0
+</style>
 
 <style lang="stylus" scoped>
   $grey-100 = #f5f5f5
   $grey-200 = #eeeeee
   $grey-700 = #616161
 
-  $yellow-100 = #FFF9C4
-
-  $border-radius = 2px
+  $border-radius = 3px
 
   .card-container
     display flex
     flex-flow column
-    padding 0.5rem 1rem
+    padding 12px
     position relative
     box-sizing border-box
     border-radius $border-radius
     transition all 0.2s ease
-    &.card-editing
-      padding-bottom 30px
-    & > :not(.card-editing)
-      cursor pointer
-    & > .actions
-      position absolute
-      right 0
-      width 100%
-      bottom 0.5rem
-      display flex
-      align-items center
-      > svg, .fa-layers, .palette
-        margin 0.5rem
-        cursor pointer
-        border-radius $border-radius
-        margin-right 0.5rem
+    &[not-editing]
+      cursor move
+
+  .close-card-btn
+    transition color 0.3s ease
+    position absolute
+    top 0
+    right 0
+    transform translate(50%, -50%)
+    height 20px
+    width 20px
+    background white
+    border-radius 50%
+    border none
+    color #7c7c7c
+    cursor pointer
+    &[editing]
+      color #333333
+    &:hover
+      color #333333
 
   .body
     text-align left
-    font-size 1rem
-    line-height 1.3rem
+    font-size 11px
     width 100%
     height 100%
     overflow-wrap break-word
-
-  textarea
-    width 100%
-    height 100%
-    border none
-    font-family inherit
-    font-size 1rem
-    line-height 1.3rem
-    outline none !important
-    resize none
-    box-sizing border-box
-    padding 16px 0
-    overflow hidden
+    outline none
+    cursor text !important
 
   .fade-enter-active, .fade-leave-active
     transition opacity .3s
