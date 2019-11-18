@@ -318,12 +318,15 @@ $border-width-inside = 2px
   font-size 12px
   color #333333
   border-radius 3px
-  border solid 1px #ededed
   background-color #ffffff
   display flex
   align-items center
   justify-content center
   cursor pointer
+  border solid 1px #ffffff
+  transition border 0.2s ease
+  &:hover
+    border solid 1px #ededed
 
 .grid-item
   display flex

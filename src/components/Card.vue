@@ -11,7 +11,6 @@
     <transition name="fade">
       <font-awesome-icon
         v-if="hover || editing"
-        :editing="editing"
         class="close-card-btn"
         icon="times-circle"
         @click="editing = false; $emit('delete')"/>
@@ -161,8 +160,6 @@ export default {
     border none
     color #7c7c7c
     cursor pointer
-    &[editing]
-      color #333333
     &:hover
       color #333333
 
