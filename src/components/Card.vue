@@ -171,6 +171,10 @@ export default {
     overflow-wrap break-word
     outline none
     cursor text !important
+    // https://stackoverflow.com/questions/23530231/contenteditable-true-height-issue-in-firefox
+    [contenteditable='true']
+      &:before
+        content "\feff "
 
   .fade-enter-active, .fade-leave-active
     transition opacity .3s
