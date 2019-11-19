@@ -172,7 +172,7 @@ export default {
     outline none
     cursor text !important
     // https://stackoverflow.com/questions/23530231/contenteditable-true-height-issue-in-firefox
-    [contenteditable='true']
+    &[contenteditable]
       &:before
         content "\feff "
 
