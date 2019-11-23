@@ -152,7 +152,7 @@ export default {
     position absolute
     top 0
     right 0
-    transform translate(50%, -50%)
+    transform translate(30%, -50%)
     height 20px
     width 20px
     background white
@@ -172,7 +172,7 @@ export default {
     outline none
     cursor text !important
     // https://stackoverflow.com/questions/23530231/contenteditable-true-height-issue-in-firefox
-    &[contenteditable]
+    &[contenteditable]:empty
       &:before
         content "\feff "
 
