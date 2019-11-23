@@ -268,6 +268,7 @@ $border-width-inside = 2px
   overflow hidden
   box-sizing border-box
   border $border-width-outside solid $border-color
+  border-radius 1px
   display grid
   // 10 columns, min width: 100px
   grid-template-columns repeat(10, minmax(100px, 1fr))
