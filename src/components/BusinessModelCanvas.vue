@@ -265,11 +265,9 @@ $border-width-inside = 2px
 
 .grid-container
   flex-grow 1
+  overflow hidden
   box-sizing border-box
-  border-top $border-width-outside - $border-width-inside solid $border-color
-  border-right $border-width-outside - $border-width-inside solid $border-color
-  border-bottom $border-width-outside solid $border-color
-  border-left $border-width-outside solid $border-color
+  border $border-width-outside solid $border-color
   display grid
   // 10 columns, min width: 100px
   grid-template-columns repeat(10, minmax(100px, 1fr))
@@ -332,6 +330,10 @@ $border-width-inside = 2px
   display flex
   flex-flow column
   transition background-color 0.2s ease
+  &[field="key-activities"],&[field="key-partners"],&[field="value-propositions"],&[field="customer-relationships"],&[field="customer-segments"]
+    border-top 0
+  &[field="customer-segments"],&[field="revenue-streams"]
+    border-right 0
   border-top $border-width-inside solid $border-color
   border-right $border-width-inside solid $border-color
   &.target

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <bmc
+      style="padding: 30px"
       :key-partners="keyPartners"
       :key-activities="keyActivities"
       :value-propositions="valuePropositions"
